@@ -24,7 +24,17 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
     log("-------------------------------------------------------");
     log(`1) Contract Deplyed at ${supplyChain.address}`);
     log("-------------------------------------------------------");
-  } catch (e) {
-    log(`${e.message}`);
+    if (
+      !developmentChains.includes(network.name) &&
+      process.env.ETHERSCAN_API_KEY
+    ) {
+      log("Verifying....");
+      await verify(supplyChain.address, args);
+      log("Verified....");
+    }
+  } catch (error) {
+    log(` Failed because---${error}`);
   }
 };
+
+module.exports.tags = ["all", "supplyChain"];
