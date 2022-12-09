@@ -9,29 +9,19 @@ if (typeof window !== "undefined") {
 }
 
 export const DAgreeProvider = ({ children }) => {
-  const [isInstalled, setIsInstalled] = useState(false);
   const [currentAccount, setCurrentAccount] = useState();
-  const [isConnected, setIsConeected] = useState(false);
-
-  // * Checks if MetaMask is installed
-  const isMetamskInstalled = async (metamask = eth) => {
-    if (!metamask) {
-      setIsInstalled(false);
-    } else {
-      setIsInstalled(true);
-    }
-  };
+  const [isLoading, setIsLoading] = useState(false);
 
   // * Checks if MetaMask is installed and an account is connected
 
   const checkIfWalletIsConnected = async (metamask = eth) => {
     try {
-      if (isInstalled) setIsInstalled(false);
+      if (!metamask) return alert("Please install metamask ");
       const accounts = await metamask.request({ method: "eth_accounts" });
       if (accounts.length) {
         setCurrentAccount(accounts[0]);
+        console.log(currentAccount);
       }
-      setIsConeected(true);
     } catch (error) {
       console.log(error);
     }
@@ -39,32 +29,26 @@ export const DAgreeProvider = ({ children }) => {
 
   const connectWallet = async (metamask = eth) => {
     try {
-      if (isInstalled) {
-        console.log("is installed");
-        const accounts = await metamask.request({
-          method: "eth_requestAccounts",
-        });
-        setIsConeected(true);
-        setCurrentAccount(accounts[0]);
-      }
+      if (!metamask) return alert("Please install metamask first!");
+      const accounts = await metamask.request({
+        method: "eth_requestAccounts",
+      });
+      setCurrentAccount(accounts[0]);
+      console.log(currentAccount);
     } catch (error) {
       console.error(error);
     }
   };
 
   useEffect(() => {
-    isMetamskInstalled();
     checkIfWalletIsConnected();
-  });
+  }, []);
 
   return (
     <DAgriContext.Provider
       value={{
         currentAccount,
         connectWallet,
-        isInstalled,
-        isConnected,
-        checkIfWalletIsConnected,
       }}
     >
       {children}

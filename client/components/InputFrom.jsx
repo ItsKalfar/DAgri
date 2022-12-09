@@ -4,10 +4,7 @@ export default function InputFrom() {
   return (
     <form className="bg-white w-2/5 mr-2 mt-2 shadow-md rounded px-8 pt-6 pb-8 mb-4">
       <div className="mb-4">
-        <label
-          className="block text-gray-700  font-bold mb-2"
-          for="productName"
-        >
+        <label className="block text-gray-700  font-bold mb-2">
           Product Name
         </label>
         <input
@@ -18,10 +15,7 @@ export default function InputFrom() {
         />
       </div>
       <div className="mb-4">
-        <label
-          className="block text-gray-700  font-bold mb-2"
-          for="productQuantity"
-        >
+        <label className="block text-gray-700  font-bold mb-2">
           Product Quantity
         </label>
         <input
@@ -31,10 +25,7 @@ export default function InputFrom() {
         />
       </div>
       <div className="mb-4">
-        <label
-          className="block text-gray-700  font-bold mb-2"
-          for="productPrice"
-        >
+        <label className="block text-gray-700  font-bold mb-2">
           Product price
         </label>
         <input
