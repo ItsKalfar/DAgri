@@ -1,20 +1,8 @@
-import { useState, useContext } from "react";
-import { DAgriContext } from "../context/DAgriContext";
-import Link from "next/link";
+import React from "react";
 import Head from "next/head";
+import Link from "next/link";
 
 export default function Home() {
-  const { createAccount } = useContext(DAgriContext);
-  const [values, setValues] = useState({
-    name: "",
-    email: "",
-    pass: "",
-  });
-
-  const handleCreateAccount = () => {
-    createAccount(values.name, values.email, values.pass);
-  };
-
   return (
     <>
       <Head>
@@ -23,73 +11,10 @@ export default function Home() {
         <meta name="distribution" content="global" />
         <meta name="language" content="English" />
       </Head>
-      <div className="bg-blue-50 min-h-screen flex flex-col">
-        <div className="container max-w-md mx-auto flex-1 flex flex-col items-center justify-center px-2">
-          <div className="bg-white px-6 py-8 rounded shadow-md text-black w-full">
-            {" "}
-            <h1 className="uppercase mb-8 text-3xl text-center font-bold">
-              welcome
-            </h1>
-            <div className="mb-4">
-              <label className="block mb-2 text-sm font-medium text-gray-900">
-                Name
-              </label>
-              <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                id="email"
-                type="text"
-                placeholder="Please enter name..."
-                onChange={(e) =>
-                  setValues((prev) => ({ ...prev, name: e.target.value }))
-                }
-              />
-            </div>
-            <div className="mb-4">
-              <label className="block mb-2 text-sm font-medium text-gray-900">
-                Email
-              </label>
-              <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                id="email"
-                type="email"
-                placeholder="Please enter email..."
-                onChange={(e) =>
-                  setValues((prev) => ({ ...prev, email: e.target.value }))
-                }
-              />
-            </div>
-            <div className="mb-4">
-              <label className="block mb-2 text-sm font-medium text-gray-900">
-                Password
-              </label>
-              <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                id="password"
-                type="password"
-                placeholder="Please enter password..."
-                onChange={(e) =>
-                  setValues((prev) => ({ ...prev, pass: e.target.value }))
-                }
-              />
-            </div>
-            <button
-              className="bg-blue-600 hover:bg-blue-900 rounded-full text-white font-bold py-3 px-9 focus:outline-none focus:shadow-outline uppercase flex items-center justify-center w-full mt-8"
-              onClick={handleCreateAccount}
-            >
-              Create Account
-            </button>
-          </div>
-          <div className="text-grey-dark mt-6">
-            Already have an account?
-            <Link
-              className="mt-4 font-medium text-blue-600 hover:underline ml-1"
-              href="/logIn"
-            >
-              Log in
-            </Link>
-            .
-          </div>
-        </div>
+      <div>
+        <Link href="/farmer">Farmer</Link>
+        <Link href="/distributer">Distributer</Link>
+        <Link href="/retailer">Retailer</Link>
       </div>
     </>
   );
