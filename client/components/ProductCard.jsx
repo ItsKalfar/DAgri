@@ -19,9 +19,14 @@ export default function ProductCard() {
         </div>
         <div className="flex items-center justify-between">
           <p className="text-xl font-bold text-gray-900">Price</p>
-          <button className=" text-red-600 active:bg-red-900 font-bold uppercase text-sm px-6 py-2 rounded-full shadow hover:shadow-lg border-2 border-red-600 hover:bg-red-600 hover:text-white">
-            Cancel
-          </button>
+          <div className="flex">
+            <button className=" text-red-600 active:bg-red-900 font-bold uppercase text-sm px-6 py-2 rounded-full shadow hover:shadow-lg border-2 border-red-600 hover:bg-red-600 hover:text-white mx-2">
+              Update
+            </button>
+            <button className=" text-red-600 active:bg-red-900 font-bold uppercase text-sm px-6 py-2 rounded-full shadow hover:shadow-lg border-2 border-red-600 hover:bg-red-600 hover:text-white mx-2">
+              Cancel
+            </button>
+          </div>
         </div>
       </div>
     </div>

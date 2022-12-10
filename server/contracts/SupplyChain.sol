@@ -21,6 +21,7 @@ contract SupplyChain {
         uint256 tokenId;
         uint256 productQuantity;
         uint256 productPrice;
+        string cateory;
         address seller;
     }
     struct Owners {
@@ -90,7 +91,8 @@ contract SupplyChain {
     function listItem(
         string memory _ProductName,
         uint256 _quantity,
-        uint256 _price
+        uint256 _price,
+        string memory _category
     ) external {
         if (_price <= 0) {
             revert PriceMustNotZero();
@@ -102,6 +104,7 @@ contract SupplyChain {
             currentID,
             _quantity,
             _price,
+            _category,
             msg.sender
         );
         s_productOwners[currentID].farmerAddress = msg.sender;
@@ -145,6 +148,7 @@ contract SupplyChain {
             product.tokenId,
             product.productQuantity,
             newPrice,
+            product.cateory,
             msg.sender
         );
         s_totalDistibuterInventory[product.productName] = Product(
@@ -152,6 +156,7 @@ contract SupplyChain {
             product.tokenId,
             product.productQuantity,
             newPrice,
+            product.cateory,
             msg.sender
         );
         s_productOwners[product.tokenId].distributerAddress = msg.sender;
@@ -160,6 +165,7 @@ contract SupplyChain {
             product.tokenId,
             product.productQuantity,
             newPrice,
+            product.cateory,
             msg.sender
         );
         payable(product.seller).transfer(product.productPrice);
