@@ -67,33 +67,6 @@ export const DAgreeProvider = ({ children }) => {
     }
   };
 
-  //----------------------Get all products----------------------------------
-  const getAllProducts = async () => {
-    try {
-      if (
-        typeof window.ethereum !== "undefined" ||
-        typeof window.web3 !== "undefined"
-      ) {
-        const { ethereum } = window;
-        if (ethereum) {
-          const provider = new ethers.providers.Web3Provider(ethereum);
-          const signer = provider.getSigner();
-          const SupplyChain = new ethers.Contract(contractAddress, ABI, signer);
-
-          for (let i = 0; i < 100; i++) {
-            let items = await SupplyChain.getFarmersListing(i);
-          }
-        }
-      }
-    } catch (err) {
-      alert(err.message);
-    }
-  };
-
-  useEffect(() => {
-    getAllProducts();
-  }, [allProducts]);
-
   return (
     <DAgriContext.Provider value={{ listProduct, listItemListerner }}>
       {children}
