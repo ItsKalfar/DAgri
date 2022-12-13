@@ -1,9 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
-import "@openzeppelin/contracts/utils/Counters.sol";
-import "@openzeppelin/contracts/utils/math/SafeMath.sol";
-
 // Errors
 error NotListed();
 error PriceMustNotZero();
@@ -11,9 +8,7 @@ error PriceNotMet();
 error NotOwner();
 
 contract SupplyChain {
-    using Counters for Counters.Counter;
-    using SafeMath for uint256;
-    Counters.Counter public _tokenIDs;
+    uint256 public s_tokenIDs;
 
     // State Variables
     struct Product {
@@ -97,8 +92,8 @@ contract SupplyChain {
         if (_price <= 0) {
             revert PriceMustNotZero();
         }
-        _tokenIDs.increment();
-        uint256 currentID = _tokenIDs.current();
+        s_tokenIDs++;
+        uint256 currentID = s_tokenIDs;
         s_farmerInventory[currentID] = Product(
             _ProductName,
             currentID,
@@ -238,6 +233,6 @@ contract SupplyChain {
     }
 
     function getTokenId() external view returns (uint256) {
-        return _tokenIDs.current();
+        return s_tokenIDs;
     }
 }
