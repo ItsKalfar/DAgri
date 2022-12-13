@@ -13,7 +13,7 @@ error NotOwner();
 contract SupplyChain {
     using Counters for Counters.Counter;
     using SafeMath for uint256;
-    Counters.Counter private _tokenIDs;
+    Counters.Counter public _tokenIDs;
 
     // State Variables
     struct Product {
@@ -235,5 +235,9 @@ contract SupplyChain {
         string memory _productName
     ) external view returns (Product memory) {
         return s_productDistributer[_productName];
+    }
+
+    function getTokenId() external view returns (uint256) {
+        return _tokenIDs.current();
     }
 }

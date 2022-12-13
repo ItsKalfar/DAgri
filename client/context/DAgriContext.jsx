@@ -1,11 +1,13 @@
 import React, { useState, createContext, useEffect } from "react";
 import ContractABI from "../constants/ContractABI.json";
 import { ethers } from "ethers";
+import { toast } from "react-hot-toast";
 
 export const DAgriContext = createContext();
 
 export const DAgreeProvider = ({ children }) => {
   const [allProducts, setAllProducts] = useState([]);
+  const [userName, setUserName] = useState("Connected");
   const ABI = ContractABI.abi;
   const contractAddress = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS;
 
@@ -28,6 +30,7 @@ export const DAgreeProvider = ({ children }) => {
             price,
             category
           );
+          listItemListerner();
         }
       }
     } catch (err) {
@@ -57,7 +60,7 @@ export const DAgreeProvider = ({ children }) => {
               category,
               seller
             ) => {
-              alert("Item listed successfully!");
+              toast.success("Item Listed Successfully");
             }
           );
         }
@@ -68,7 +71,7 @@ export const DAgreeProvider = ({ children }) => {
   };
 
   return (
-    <DAgriContext.Provider value={{ listProduct, listItemListerner }}>
+    <DAgriContext.Provider value={{ listProduct, userName }}>
       {children}
     </DAgriContext.Provider>
   );

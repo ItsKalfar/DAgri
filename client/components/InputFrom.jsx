@@ -26,7 +26,7 @@ export default function InputFrom() {
         values.quantity,
         values.price,
         values.category
-      ).then(() => listItemListerner());
+      );
     } catch (error) {
       alert(error.message);
     }
