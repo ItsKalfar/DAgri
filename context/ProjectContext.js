@@ -44,7 +44,7 @@ export const ProjectContextProvider = ({ children }) => {
    */
   const checkIfWalletIsConnected = async (metamask = eth) => {
     try {
-      if (!metamask) return alert("Please install metamask ");
+      if (!metamask) return toast.error("Please install Metamask First");
 
       const accounts = await metamask.request({ method: "eth_accounts" });
 
@@ -110,8 +110,7 @@ export const ProjectContextProvider = ({ children }) => {
 
           for (let index = 1; index <= tokenId; index++) {
             let getItem = await SupplyChain.getFarmersListing(index);
-            setAllProducts((prev) => [...prev, getItem]);
-            console.log(setAllProducts);
+            setAllProducts((prev) => [getItem, ...prev]);
           }
 
           setIsLoading(false);
@@ -122,10 +121,33 @@ export const ProjectContextProvider = ({ children }) => {
     }
   };
 
+  const cancelProduct = async (tokenNumber) => {
+    try {
+      if (
+        typeof window.ethereum !== "undefined" ||
+        typeof window.web3 !== "undefined"
+      ) {
+        const { ethereum } = window;
+        if (ethereum) {
+          const provider = new ethers.providers.Web3Provider(ethereum);
+          const signer = provider.getSigner();
+          const SupplyChain = new ethers.Contract(contractAddress, ABI, signer);
+
+          let cancelItem = await SupplyChain.cancelItem(tokenNumber);
+          toast.loading("Canceling Item", { duration: 4000 });
+          let canceledItem = allProducts.find(tokenId == tokenNumber);
+          console.log(canceledItem);
+          SupplyChain.on("ItemCanceled", () => toast.success("Item Canceled!"));
+        }
+      }
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
   useEffect(() => {
     checkIfWalletIsConnected();
     getAllProducts();
-    console.log("fired");
   }, []);
 
   return (
@@ -137,6 +159,7 @@ export const ProjectContextProvider = ({ children }) => {
         getAllProducts,
         allProducts,
         isLoading,
+        cancelProduct,
       }}
     >
       {children}

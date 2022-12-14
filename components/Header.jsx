@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { BsWallet2 } from "react-icons/bs";
-import { MdOutlineSell, MdSell, MdClose } from "react-icons/md";
+import { MdOutlineSell, MdClose } from "react-icons/md";
 import { ProjectContext } from "../context/ProjectContext";
 import Modal from "react-modal";
 
