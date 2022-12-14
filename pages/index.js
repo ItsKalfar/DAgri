@@ -6,7 +6,7 @@ import { ethers } from "ethers";
 import ProductCard from "../components/ProductCard";
 
 export default function Home() {
-  const { currentAccount, allProducts } = useContext(ProjectContext);
+  const { currentAccount, allProducts, isLoading } = useContext(ProjectContext);
   return (
     <>
       <Toaster position="top-center" reverseOrder={false} />

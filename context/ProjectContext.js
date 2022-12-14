@@ -14,6 +14,7 @@ export const ProjectContextProvider = ({ children }) => {
   const ABI = ContractABI.abi;
   const contractAddress = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS;
   const [currentAccount, setCurrentAccount] = useState();
+  const [isLoading, setIsLoading] = useState(false);
   const [allProducts, setAllProducts] = useState([]);
 
   /**
@@ -50,10 +51,8 @@ export const ProjectContextProvider = ({ children }) => {
       if (accounts.length) {
         setCurrentAccount(accounts[0]);
       }
-      toast.success("Wallet Connected!");
     } catch (error) {
       console.error(error);
-      throw new Error("No ethereum object.");
     }
   };
 
@@ -105,6 +104,8 @@ export const ProjectContextProvider = ({ children }) => {
           const signer = provider.getSigner();
           const SupplyChain = new ethers.Contract(contractAddress, ABI, signer);
 
+          setIsLoading(true);
+
           let tokenId = await SupplyChain.getTokenId();
 
           for (let index = 1; index <= tokenId; index++) {
@@ -112,6 +113,8 @@ export const ProjectContextProvider = ({ children }) => {
             setAllProducts((prev) => [...prev, getItem]);
             console.log(setAllProducts);
           }
+
+          setIsLoading(false);
         }
       }
     } catch (error) {
@@ -133,6 +136,7 @@ export const ProjectContextProvider = ({ children }) => {
         listProduct,
         getAllProducts,
         allProducts,
+        isLoading,
       }}
     >
       {children}
