@@ -1,5 +1,10 @@
 import { useEffect } from "react";
+import Header from "../components/Header";
 
 export default function Home() {
-  return <h1>Jay shree Ganesh</h1>;
+  return (
+    <div className="bg-blue-50 h-screen">
+      <Header />
+    </div>
+  );
 }
