@@ -1,4 +1,7 @@
 import React, { useState, createContext, useEffect } from "react";
+import ContractABI from "../constants/ContractABI.json";
+import { ethers } from "ethers";
+import { toast } from "react-hot-toast";
 export const ProjectContext = createContext();
 
 let eth;
@@ -8,7 +11,10 @@ if (typeof window !== "undefined") {
 }
 
 export const ProjectContextProvider = ({ children }) => {
+  const ABI = ContractABI.abi;
+  const contractAddress = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS;
   const [currentAccount, setCurrentAccount] = useState();
+  const [allProducts, setAllProducts] = useState([]);
 
   /**
    * Prompts user to connect their MetaMask wallet
@@ -23,6 +29,7 @@ export const ProjectContextProvider = ({ children }) => {
       });
 
       setCurrentAccount(accounts[0]);
+      toast.success("Wallet Connected!");
     } catch (error) {
       console.error(error);
       throw new Error("No ethereum object.");
@@ -43,18 +50,91 @@ export const ProjectContextProvider = ({ children }) => {
       if (accounts.length) {
         setCurrentAccount(accounts[0]);
       }
+      toast.success("Wallet Connected!");
     } catch (error) {
       console.error(error);
       throw new Error("No ethereum object.");
     }
   };
 
+  const listProduct = async (name, quantity, price, category) => {
+    try {
+      if (
+        typeof window.ethereum !== "undefined" ||
+        typeof window.web3 !== "undefined"
+      ) {
+        const { ethereum } = window;
+        if (ethereum) {
+          const provider = new ethers.providers.Web3Provider(ethereum);
+          const signer = provider.getSigner();
+          const SupplyChain = new ethers.Contract(contractAddress, ABI, signer);
+
+          if (!name || !quantity || !price || !category) {
+            toast.error("Please Provide All The Details");
+          }
+
+          let newPrice = new ethers.utils.parseEther(price);
+          let listTheItem = await SupplyChain.listItem(
+            name,
+            quantity,
+            newPrice,
+            category
+          );
+          console.log(newPrice);
+
+          toast.loading("Listing Your Item...", { duration: 6000 });
+          SupplyChain.on("ItemListed", () => {
+            toast.success("Item Listed Successfully");
+          });
+        }
+      }
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
+
+  const getAllProducts = async () => {
+    try {
+      if (
+        typeof window.ethereum !== "undefined" ||
+        typeof window.web3 !== "undefined"
+      ) {
+        const { ethereum } = window;
+        if (ethereum) {
+          const provider = new ethers.providers.Web3Provider(ethereum);
+          const signer = provider.getSigner();
+          const SupplyChain = new ethers.Contract(contractAddress, ABI, signer);
+
+          let tokenId = await SupplyChain.getTokenId();
+
+          for (let index = 1; index <= tokenId; index++) {
+            let getItem = await SupplyChain.getFarmersListing(index);
+            setAllProducts((prev) => [...prev, getItem]);
+            console.log(setAllProducts);
+          }
+        }
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
   useEffect(() => {
     checkIfWalletIsConnected();
+    getAllProducts();
+    console.log("fired");
   }, []);
 
   return (
-    <ProjectContext.Provider value={{ connectWallet, currentAccount }}>
+    <ProjectContext.Provider
+      value={{
+        connectWallet,
+        currentAccount,
+        listProduct,
+        getAllProducts,
+        allProducts,
+      }}
+    >
       {children}
     </ProjectContext.Provider>
   );
