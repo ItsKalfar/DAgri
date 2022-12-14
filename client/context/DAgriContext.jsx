@@ -1,4 +1,4 @@
-import React, { useState, createContext, useEffect } from "react";
+import React, { useState, createContext } from "react";
 import ContractABI from "../constants/ContractABI.json";
 import { ethers } from "ethers";
 import { toast } from "react-hot-toast";
@@ -7,12 +7,11 @@ export const DAgriContext = createContext();
 
 export const DAgreeProvider = ({ children }) => {
   const [allProducts, setAllProducts] = useState([]);
-  const [userName, setUserName] = useState("Connected");
   const ABI = ContractABI.abi;
   const contractAddress = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS;
-
   //-----------List Product-----------------------------------------
-  const listProduct = async (name, quantity, price, category) => {
+
+  const getProducts = async () => {
     try {
       if (
         typeof window.ethereum !== "undefined" ||
@@ -24,21 +23,21 @@ export const DAgreeProvider = ({ children }) => {
           const signer = provider.getSigner();
           const SupplyChain = new ethers.Contract(contractAddress, ABI, signer);
 
-          let listTheItem = await SupplyChain.listItem(
-            name,
-            quantity,
-            price,
-            category
-          );
-          listItemListerner();
+          let tokenId = await SupplyChain.getTokenId();
+
+          for (let index = 1; index <= tokenId; index++) {
+            let getItem = await SupplyChain.getFarmersListing(index);
+            setAllProducts((prev) => [...prev, getItem]);
+            console.log("product Addedd");
+          }
         }
       }
-    } catch (err) {
-      alert(err.message);
+    } catch (error) {
+      console.log(error.message);
     }
   };
 
-  const listItemListerner = () => {
+  const cancelProduct = async (tokenId) => {
     try {
       if (
         typeof window.ethereum !== "undefined" ||
@@ -50,28 +49,20 @@ export const DAgreeProvider = ({ children }) => {
           const signer = provider.getSigner();
           const SupplyChain = new ethers.Contract(contractAddress, ABI, signer);
 
-          SupplyChain.on(
-            "ItemListed",
-            (
-              productName,
-              tokenId,
-              productQuantity,
-              productPrice,
-              category,
-              seller
-            ) => {
-              toast.success("Item Listed Successfully");
-            }
+          let cancelItem = await SupplyChain.cancelItem(tokenId);
+
+          SupplyChain.on("ItemCanceled", (productName, tokenId, seller) =>
+            toast.success("Item deleted successfully!")
           );
         }
       }
-    } catch (err) {
-      alert(err.message);
+    } catch (error) {
+      console.log(error.message);
     }
   };
 
   return (
-    <DAgriContext.Provider value={{ listProduct, userName }}>
+    <DAgriContext.Provider value={{ allProducts, getProducts, cancelProduct }}>
       {children}
     </DAgriContext.Provider>
   );
