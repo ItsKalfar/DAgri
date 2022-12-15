@@ -138,7 +138,7 @@ export const ProjectContextProvider = ({ children }) => {
           const removedItem = allProducts.find((product) => {
             return product.tokenId == tokenNumber;
           });
-          console.log(removedItem);
+          console.log(removedItem.index);
           toast.loading("Canceling Item", { duration: 4000 });
           SupplyChain.on("ItemCanceled", () => toast.success("Item Canceled!"));
         }
