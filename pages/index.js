@@ -4,6 +4,7 @@ import { Toaster } from "react-hot-toast";
 import { ProjectContext } from "../context/ProjectContext";
 import ProductCard from "../components/ProductCard";
 import { Oval } from "react-loader-spinner";
+import SellProduct from "../components/SellProduct";
 
 export default function Home() {
   const { currentAccount, allProducts, isLoading } = useContext(ProjectContext);
@@ -14,7 +15,7 @@ export default function Home() {
 
       <div className="h-full" id="index">
         <Header />
-        <div className="flex flex-col">
+        <div>
           {currentAccount ? (
             <div className="container mx-auto">
               {isLoading ? (
@@ -33,36 +34,39 @@ export default function Home() {
                   />
                 </div>
               ) : (
-                <div>
-                  {allProducts.map((product) => {
-                    let {
-                      productName,
-                      tokenId,
-                      productQuantity,
-                      productPrice,
-                      cateory,
-                      seller,
-                    } = product;
+                <div className="container mx-auto py-8 flex items-start">
+                  <SellProduct className="border-black border-2" />
+                  <div className="grid md:grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3">
+                    {allProducts.map((product) => {
+                      let {
+                        productName,
+                        tokenId,
+                        productQuantity,
+                        productPrice,
+                        cateory,
+                        seller,
+                      } = product;
 
-                    let tokenID = tokenId.toString();
-                    let quantity = productQuantity.toString();
-                    let price = productPrice.toString();
-                    let Seller = seller.toString();
-                    let category = cateory.toUpperCase();
+                      let tokenID = tokenId.toString();
+                      let quantity = productQuantity.toString();
+                      let price = productPrice.toString();
+                      let Seller = seller.toString();
+                      let category = cateory.toUpperCase();
 
-                    return (
-                      <div key={tokenId}>
-                        <ProductCard
-                          name={productName}
-                          tokenID={tokenID}
-                          quantity={quantity}
-                          price={price}
-                          Category={category}
-                          Seller={Seller}
-                        />
-                      </div>
-                    );
-                  })}
+                      return (
+                        <div key={tokenId} className="w-96 ml-4">
+                          <ProductCard
+                            name={productName}
+                            tokenID={tokenID}
+                            quantity={quantity}
+                            price={price}
+                            Category={category}
+                            Seller={Seller}
+                          />
+                        </div>
+                      );
+                    })}
+                  </div>
                 </div>
               )}
             </div>

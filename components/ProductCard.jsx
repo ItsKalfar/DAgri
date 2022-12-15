@@ -55,7 +55,7 @@ export default function ProductCard({
   return (
     <>
       <Modal isOpen={modalIsOpen} style={customStyles}>
-        <div className="bg-white px-12 py-14 rounded shadow-md border-gray-200 border-2 text-blac w-full flex flex-col items-center">
+        <div className="bg-white px-12 py-14 rounded shadow-md border-gray-200 border-2 text-blac w-full flex flex-col items-center ">
           <div className="flex flex-col items-start mb-2 w-full">
             <MdClose
               onClick={() => setModalIsOpen(!modalIsOpen)}
@@ -90,7 +90,7 @@ export default function ProductCard({
             </div>
           </div>
           {currentAccount === Seller.toLowerCase() ? (
-            <div className="w-full">
+            <div className="w-full ">
               <div className="mb-4 w-full">
                 <label className="block mb-2 text-sm font-medium text-gray-900">
                   New Price
@@ -123,35 +123,36 @@ export default function ProductCard({
           )}
         </div>
       </Modal>
-      <div className="rounded overflow-hidden shadow-md bg-white my-2 relative cursor-pointer hover:shadow-lg transition-shadow">
-        <div className="w-full px-5 py-5">
-          <div className="flex items-center justify-between">
-            <div className="mb-4" onClick={() => setModalIsOpen(!modalIsOpen)}>
-              <h1 className="font-bold text-lg">{name}</h1>
-              <h2 className="font-semibold text-gray-400">{tokenID}</h2>
-            </div>
-            <div
-              className="font-semibold text-gray-400 absolute top-6 right-8"
-              onClick={() => toast.success("Copied to Clipboard")}
-            >
-              <div className="py-1 px-4 bg-gray-200 rounded-full text-gray-500 flex items-center">
-                <MdContentCopy className="mr-1" />
-                <CopyToClipboard text={Seller.toLowerCase()}>
-                  <span>{sellerAddress}</span>
-                </CopyToClipboard>
-              </div>
-            </div>
-          </div>
-
-          <div className="mb-4">
-            <p className="font-semibold text-gray-400">{quantity} Kg</p>
-          </div>
-          <div className="mb-4">
-            <p className="font-semibold text-gray-400">{Category}</p>
-          </div>
-          <div className="flex items-center justify-between">
-            <p className="text-xl font-bold text-gray-900">{price} ETH</p>
-          </div>
+      <div className="shadow-lg px-6 py-8 rounded-lg">
+        <div
+          className="py-1 px-4 bg-gray-200 rounded-full text-gray-500 flex items-center w-32 mb-4 cursor-copy "
+          onClick={() => toast.success("Copied to Clipboard")}
+        >
+          <MdContentCopy className="mr-1" />
+          <CopyToClipboard text={Seller.toLowerCase()}>
+            <span>{sellerAddress}</span>
+          </CopyToClipboard>
+        </div>
+        <div
+          className="mb-4 cursor-pointer px-1"
+          onClick={() => setModalIsOpen(!modalIsOpen)}
+        >
+          {" "}
+          <p className="block mb-6 text-md font-medium text-gray-900">
+            Product Name : {name.toUpperCase()}
+          </p>
+          <p className="block mb-6 text-md font-medium text-gray-900">
+            Product Id : {tokenID}
+          </p>
+          <p className="block mb-6 text-md font-medium text-gray-900">
+            Product Category : {Category.toUpperCase()}
+          </p>
+          <p className="block mb-6 text-md font-medium text-gray-900">
+            Total Quantity : {quantity} Kg
+          </p>
+          <p className="flex mb-6 text-md font-medium text-gray-900 items-start">
+            Price : <FaEthereum className="mt-1 ml-2 mr-1" /> {price}
+          </p>
         </div>
       </div>
     </>
