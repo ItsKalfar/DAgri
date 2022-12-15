@@ -138,16 +138,16 @@ export default function ProductCard({
           onClick={() => setModalIsOpen(!modalIsOpen)}
         >
           {" "}
-          <p className="block mb-6 text-md font-medium text-gray-900">
+          <p className="block mb-4 text-md font-medium text-gray-900">
             Product Name : {name.toUpperCase()}
           </p>
-          <p className="block mb-6 text-md font-medium text-gray-900">
+          <p className="block mb-4 text-md font-medium text-gray-900">
             Product Id : {tokenID}
           </p>
-          <p className="block mb-6 text-md font-medium text-gray-900">
+          <p className="block mb-4 text-md font-medium text-gray-900">
             Product Category : {Category.toUpperCase()}
           </p>
-          <p className="block mb-6 text-md font-medium text-gray-900">
+          <p className="block mb-4 text-md font-medium text-gray-900">
             Total Quantity : {quantity} Kg
           </p>
           <p className="flex mb-6 text-md font-medium text-gray-900 items-start">
