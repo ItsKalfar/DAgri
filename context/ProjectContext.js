@@ -23,7 +23,7 @@ export const ProjectContextProvider = ({ children }) => {
    */
   const connectWallet = async (metamask = eth) => {
     try {
-      if (!metamask) return alert("Please install metamask ");
+      if (!metamask) return toast.error("Please install Metamask First");
 
       const accounts = await metamask.request({
         method: "eth_requestAccounts",
@@ -111,13 +111,14 @@ export const ProjectContextProvider = ({ children }) => {
           for (let index = 1; index <= tokenId; index++) {
             let getItem = await SupplyChain.getFarmersListing(index);
             setAllProducts((prev) => [getItem, ...prev]);
+            console.log(setAllProducts);
           }
 
           setIsLoading(false);
         }
       }
     } catch (error) {
-      console.log(error.message);
+      alert(error.message);
     }
   };
 
@@ -132,11 +133,13 @@ export const ProjectContextProvider = ({ children }) => {
           const provider = new ethers.providers.Web3Provider(ethereum);
           const signer = provider.getSigner();
           const SupplyChain = new ethers.Contract(contractAddress, ABI, signer);
-
+          let tokenId = await SupplyChain.getTokenId();
           let cancelItem = await SupplyChain.cancelItem(tokenNumber);
+          const removedItem = allProducts.find((product) => {
+            return product.tokenId == tokenNumber;
+          });
+          console.log(removedItem);
           toast.loading("Canceling Item", { duration: 4000 });
-          let canceledItem = allProducts.find(tokenId == tokenNumber);
-          console.log(canceledItem);
           SupplyChain.on("ItemCanceled", () => toast.success("Item Canceled!"));
         }
       }

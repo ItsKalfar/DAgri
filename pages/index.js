@@ -11,6 +11,7 @@ export default function Home() {
   return (
     <>
       <Toaster position="top-center" reverseOrder={false} />
+
       <div className="h-full" id="index">
         <Header />
         <div className="flex flex-col">
@@ -66,7 +67,7 @@ export default function Home() {
               )}
             </div>
           ) : (
-            <div className="container mx-auto p-8 ">
+            <div className="container mx-auto p-8 flex item-center justify-center">
               <h1>Please Connect your wallet first</h1>
             </div>
           )}
