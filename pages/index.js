@@ -40,15 +40,15 @@ export default function Home() {
                       tokenId,
                       productQuantity,
                       productPrice,
-                      categoery,
+                      cateory,
                       seller,
                     } = product;
 
                     let tokenID = tokenId.toString();
                     let quantity = productQuantity.toString();
-                    let newPrice = productPrice * 0.000000000000000001;
-                    let price = newPrice.toString();
+                    let price = productPrice.toString();
                     let Seller = seller.toString();
+                    let category = cateory.toUpperCase();
 
                     return (
                       <div key={tokenId}>
@@ -57,7 +57,7 @@ export default function Home() {
                           tokenID={tokenID}
                           quantity={quantity}
                           price={price}
-                          Category={categoery}
+                          Category={category}
                           Seller={Seller}
                         />
                       </div>

@@ -14,6 +14,7 @@ export const ProjectContextProvider = ({ children }) => {
   const ABI = ContractABI.abi;
   const contractAddress = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS;
   const [currentAccount, setCurrentAccount] = useState();
+  const [currentBalance, setCurrentBalance] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [allProducts, setAllProducts] = useState([]);
 
@@ -32,8 +33,7 @@ export const ProjectContextProvider = ({ children }) => {
       setCurrentAccount(accounts[0]);
       toast.success("Wallet Connected!");
     } catch (error) {
-      console.error(error);
-      throw new Error("No ethereum object.");
+      toast.error(error.message);
     }
   };
 
@@ -52,7 +52,7 @@ export const ProjectContextProvider = ({ children }) => {
         setCurrentAccount(accounts[0]);
       }
     } catch (error) {
-      console.error(error);
+      toast.error(error.message);
     }
   };
 
@@ -72,14 +72,12 @@ export const ProjectContextProvider = ({ children }) => {
             toast.error("Please Provide All The Details");
           }
 
-          let newPrice = new ethers.utils.parseEther(price);
           let listTheItem = await SupplyChain.listItem(
             name,
             quantity,
-            newPrice,
+            price,
             category
           );
-          console.log(newPrice);
 
           toast.loading("Listing Your Item...", { duration: 6000 });
           SupplyChain.on("ItemListed", () => {
@@ -87,8 +85,8 @@ export const ProjectContextProvider = ({ children }) => {
           });
         }
       }
-    } catch (err) {
-      console.log(err.message);
+    } catch (error) {
+      toast.error(error.message);
     }
   };
 
@@ -110,15 +108,16 @@ export const ProjectContextProvider = ({ children }) => {
 
           for (let index = 1; index <= tokenId; index++) {
             let getItem = await SupplyChain.getFarmersListing(index);
-            setAllProducts((prev) => [getItem, ...prev]);
-            console.log(setAllProducts);
+            if (getItem.tokenId._hex > 0) {
+              setAllProducts((prev) => [getItem, ...prev]);
+            }
           }
 
           setIsLoading(false);
         }
       }
     } catch (error) {
-      alert(error.message);
+      toast.error(error.message);
     }
   };
 
@@ -133,25 +132,43 @@ export const ProjectContextProvider = ({ children }) => {
           const provider = new ethers.providers.Web3Provider(ethereum);
           const signer = provider.getSigner();
           const SupplyChain = new ethers.Contract(contractAddress, ABI, signer);
-          let tokenId = await SupplyChain.getTokenId();
           let cancelItem = await SupplyChain.cancelItem(tokenNumber);
-          const removedItem = allProducts.find((product) => {
-            return product.tokenId == tokenNumber;
-          });
-          console.log(removedItem.index);
           toast.loading("Canceling Item", { duration: 4000 });
           SupplyChain.on("ItemCanceled", () => toast.success("Item Canceled!"));
         }
       }
     } catch (error) {
-      alert(error.message);
+      toast.error(error.message);
+    }
+  };
+
+  const updateProduct = async (tokenNumber, newPrice) => {
+    try {
+      if (
+        typeof window.ethereum !== "undefined" ||
+        typeof window.web3 !== "undefined"
+      ) {
+        const { ethereum } = window;
+        if (ethereum) {
+          const provider = new ethers.providers.Web3Provider(ethereum);
+          const signer = provider.getSigner();
+          const SupplyChain = new ethers.Contract(contractAddress, ABI, signer);
+          let updateListing = await SupplyChain.updateListing(
+            tokenNumber,
+            newPrice
+          );
+        }
+      }
+    } catch (error) {
+      toast.error(error.message);
     }
   };
 
   useEffect(() => {
     checkIfWalletIsConnected();
     getAllProducts();
-  }, []);
+    console.log("fired");
+  }, [currentAccount]);
 
   return (
     <ProjectContext.Provider
@@ -163,6 +180,7 @@ export const ProjectContextProvider = ({ children }) => {
         allProducts,
         isLoading,
         cancelProduct,
+        updateProduct,
       }}
     >
       {children}
