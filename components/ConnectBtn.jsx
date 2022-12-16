@@ -1,8 +1,6 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { ProjectContext } from "../context/ProjectContext";
 import { BsWallet2 } from "react-icons/bs";
-import { MdOutlineSell } from "react-icons/md";
-import { FaEthereum } from "react-icons/fa";
 
 export default function ConnectBtn() {
   const { connectWallet, currentAccount } = useContext(ProjectContext);

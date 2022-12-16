@@ -37,7 +37,7 @@ export default function ProductCard({
     if (currentAccount === Seller.toLowerCase()) {
       setSellerAddress("You");
     } else {
-      let seller = Seller.slice(0, 5) + "..." + Seller.slice(35, 42);
+      let seller = Seller.slice(0, 5) + "..." + Seller.slice(38, 42);
       setSellerAddress(seller);
     }
   });
@@ -79,9 +79,13 @@ export default function ProductCard({
             <p className="block mb-6 text-md font-medium text-gray-900">
               Total Quantity : {quantity} Kg
             </p>
-            <p className="block mb-6 text-md font-medium text-gray-900">
+            <p className="flex mb-6 text-md font-medium text-gray-900 items-start justify-center">
               Owned By :{" "}
-              {currentAccount === Seller.toLowerCase() ? "You" : Seller}
+              {currentAccount === Seller.toLowerCase() ? (
+                "You"
+              ) : (
+                <div className="ml-1">{sellerAddress}</div>
+              )}
             </p>
             <div>
               <div className="flex mb-6 text-md font-medium text-gray-900 items-start justify-center">
@@ -119,13 +123,17 @@ export default function ProductCard({
               </div>
             </div>
           ) : (
-            <div></div>
+            <div>
+              <button className="bg-blue-600 hover:bg-blue-900 rounded-full text-white  py-2 px-8 focus:outline-none focus:shadow-outline uppercase flex items-center justify-center cursor-pointer font-semibold">
+                buy
+              </button>
+            </div>
           )}
         </div>
       </Modal>
       <div className="shadow-lg px-6 py-8 rounded-lg">
         <div
-          className="py-1 px-4 bg-gray-200 rounded-full text-gray-500 flex items-center w-32 mb-4 cursor-copy "
+          className="py-1 px-4 bg-gray-200 rounded-full text-gray-500 flex items-center  mb-4 cursor-copy  w-1/2 "
           onClick={() => toast.success("Copied to Clipboard")}
         >
           <MdContentCopy className="mr-1" />

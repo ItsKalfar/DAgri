@@ -3,6 +3,18 @@ import ContractABI from "../constants/ContractABI.json";
 import { ethers } from "ethers";
 import { toast } from "react-hot-toast";
 export const ProjectContext = createContext();
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  setDoc,
+  addDoc,
+  query,
+  where,
+} from "firebase/firestore";
+import { db } from "../firebaseConfig";
+import { BsConeStriped } from "react-icons/bs";
 
 let eth;
 
@@ -14,9 +26,11 @@ export const ProjectContextProvider = ({ children }) => {
   const ABI = ContractABI.abi;
   const contractAddress = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS;
   const [currentAccount, setCurrentAccount] = useState();
-  const [currentBalance, setCurrentBalance] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [allProducts, setAllProducts] = useState([]);
+  const [isSingedIn, setIsSignedIn] = useState(false);
+  const [userProfession, setUserProfession] = useState();
+  const dbRef = collection(db, "users");
 
   /**
    * Prompts user to connect their MetaMask wallet
@@ -31,6 +45,7 @@ export const ProjectContextProvider = ({ children }) => {
       });
 
       setCurrentAccount(accounts[0]);
+
       toast.success("Wallet Connected!");
     } catch (error) {
       toast.error(error.message);
@@ -52,7 +67,44 @@ export const ProjectContextProvider = ({ children }) => {
         setCurrentAccount(accounts[0]);
       }
     } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  const signInUser = async (name, location, profession, walletAddress) => {
+    try {
+      if (!name || !location || !profession) {
+        toast.error("Please Provide All The Details");
+      }
+      await addDoc(collection(db, "users"), {
+        UserName: name,
+        userLocation: location,
+        userProf: profession,
+        userAddress: walletAddress,
+      });
+      setIsSignedIn(true);
+      setUserProfession(profession);
+      toast.success("Singned In!!");
+    } catch (error) {
       toast.error(error.message);
+    }
+  };
+  const checkUser = async () => {
+    try {
+      if (typeof currentAccount !== "undefined") {
+        const response = await getDocs(
+          query(
+            collection(db, "users"),
+            where("userAddress", "==", currentAccount)
+          )
+        );
+        response.forEach((user) => {
+          setIsSignedIn(true);
+          setUserProfession(user.data().userProf);
+        });
+      }
+    } catch (error) {
+      console.log(error.message);
     }
   };
 
@@ -86,7 +138,7 @@ export const ProjectContextProvider = ({ children }) => {
         }
       }
     } catch (error) {
-      toast.error(error.message);
+      console.log(error.message);
     }
   };
 
@@ -99,6 +151,7 @@ export const ProjectContextProvider = ({ children }) => {
         const { ethereum } = window;
         if (ethereum) {
           const provider = new ethers.providers.Web3Provider(ethereum);
+          await provider.send("eth_requestAccounts", []);
           const signer = provider.getSigner();
           const SupplyChain = new ethers.Contract(contractAddress, ABI, signer);
 
@@ -117,7 +170,7 @@ export const ProjectContextProvider = ({ children }) => {
         }
       }
     } catch (error) {
-      toast.error(error.message);
+      console.log(error.message);
     }
   };
 
@@ -166,15 +219,22 @@ export const ProjectContextProvider = ({ children }) => {
 
   useEffect(() => {
     checkIfWalletIsConnected();
-    getAllProducts();
+    if (currentAccount) {
+      getAllProducts();
+      console.log("fired");
+    }
+    checkUser();
     console.log("fired");
   }, [currentAccount]);
 
   return (
     <ProjectContext.Provider
       value={{
+        isSingedIn,
+        userProfession,
         connectWallet,
         currentAccount,
+        signInUser,
         listProduct,
         getAllProducts,
         allProducts,

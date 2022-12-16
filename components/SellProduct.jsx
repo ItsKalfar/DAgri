@@ -73,12 +73,24 @@ export default function SellProduct() {
               setValues((prev) => ({ ...prev, category: e.target.value }))
             }
           >
-            <option defaultValue="others">Product Category...</option>
-            <option value="Vegetables">Vegetables</option>
-            <option value="pulses">Pulses</option>
-            <option value="nuts">Nuts</option>
-            <option value="spices">Spices</option>
-            <option value="fruits">Fruits</option>
+            <option className="p-2.5" defaultValue="others">
+              Product Category...
+            </option>
+            <option className="p-2.5" value="Vegetables">
+              Vegetables
+            </option>
+            <option className="p-2.5" value="pulses">
+              Pulses
+            </option>
+            <option className="p-2.5" value="nuts">
+              Nuts
+            </option>
+            <option className="p-2.5" value="spices">
+              Spices
+            </option>
+            <option className="p-2.5" value="fruits">
+              Fruits
+            </option>
           </select>
         </div>
         <div
