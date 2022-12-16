@@ -20,7 +20,7 @@ export default function SignInPage() {
 
   return (
     <div className="container mx-auto flex items-center justify-center h-screen w-1/3">
-      <div className="bg-white px-12 py-14 rounded-lg shadow-md border-gray-200 border-2 text-blac w-full flex flex-col items-center">
+      <div className="bg-white px-12 py-14 rounded-lg shadow-lg border-gray-200 border-2 text-blac w-full flex flex-col items-center">
         <h1 className="uppercase mb-8 text-3xl text-center font-bold ">
           Sign In
         </h1>

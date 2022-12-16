@@ -3,7 +3,6 @@ import { ProjectContext } from "../context/ProjectContext";
 
 export default function SellProduct() {
   const { listProduct } = useContext(ProjectContext);
-  const [modalIsOpen, setModalIsOpen] = useState(false);
 
   const [values, setValues] = useState({
     name: "",
@@ -13,12 +12,14 @@ export default function SellProduct() {
   });
 
   const listTheProduct = () => {
-    listProduct(values.name, values.quantity, values.price, values.category);
-    setModalIsOpen(!modalIsOpen);
+    let parsedPrice = parseFloat(values.price);
+    console.log(values.price);
+    console.log(parsedPrice);
+    listProduct(values.name, values.quantity, parsedPrice, values.category);
   };
   return (
     <div>
-      <div className="bg-white px-12 py-16 rounded shadow-md text-black ">
+      <div className="bg-white px-12 py-16 rounded shadow-lg text-black ">
         <h1 className="uppercase mb-8 text-3xl text-center font-bold ">
           product details
         </h1>

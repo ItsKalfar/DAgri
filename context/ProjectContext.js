@@ -45,6 +45,7 @@ export const ProjectContextProvider = ({ children }) => {
       });
 
       setCurrentAccount(accounts[0]);
+      checkUser();
 
       toast.success("Wallet Connected!");
     } catch (error) {
@@ -65,6 +66,7 @@ export const ProjectContextProvider = ({ children }) => {
 
       if (accounts.length) {
         setCurrentAccount(accounts[0]);
+        checkUser();
       }
     } catch (error) {
       console.log(error.message);
@@ -124,6 +126,8 @@ export const ProjectContextProvider = ({ children }) => {
             toast.error("Please Provide All The Details");
           }
 
+          // let ethersToWei = ethers.utils.parseUnits(price.toString(), "ether");
+
           let listTheItem = await SupplyChain.listItem(
             name,
             quantity,
@@ -138,7 +142,7 @@ export const ProjectContextProvider = ({ children }) => {
         }
       }
     } catch (error) {
-      console.log(error.message);
+      toast.error(error.message);
     }
   };
 
@@ -221,9 +225,9 @@ export const ProjectContextProvider = ({ children }) => {
     checkIfWalletIsConnected();
     if (currentAccount) {
       getAllProducts();
-      console.log("fired");
     }
     checkUser();
+    console.log(currentAccount);
     console.log("fired");
   }, [currentAccount]);
 

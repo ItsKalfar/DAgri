@@ -5,6 +5,7 @@ import { ProjectContext } from "../context/ProjectContext";
 import { FaEthereum } from "react-icons/fa";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { toast } from "react-hot-toast";
+import { ethers } from "ethers";
 
 const customStyles = {
   content: {
@@ -28,7 +29,7 @@ export default function ProductCard({
   Seller,
 }) {
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [newPrice, setNewPrice] = useState(0);
+  const [newPrice, setNewPrice] = useState(0.0);
   const [sellerAddress, setSellerAddress] = useState();
   const { currentAccount, cancelProduct, updateProduct } =
     useContext(ProjectContext);
@@ -48,7 +49,9 @@ export default function ProductCard({
   };
 
   const handleUpdate = () => {
-    updateProduct(tokenID, newPrice);
+    let parsedPrice = parseFloat(newPrice);
+    updateProduct(tokenID, parsedPrice);
+
     setModalIsOpen(!modalIsOpen);
   };
 
@@ -131,7 +134,7 @@ export default function ProductCard({
           )}
         </div>
       </Modal>
-      <div className="shadow-lg px-6 py-8 rounded-lg">
+      <div className="bg-white shadow-lg px-6 py-8 rounded-lg">
         <div
           className="py-1 px-4 bg-gray-200 rounded-full text-gray-500 flex items-center  mb-4 cursor-copy  w-1/2 "
           onClick={() => toast.success("Copied to Clipboard")}
@@ -159,7 +162,8 @@ export default function ProductCard({
             Total Quantity : {quantity} Kg
           </p>
           <p className="flex mb-6 text-md font-medium text-gray-900 items-start">
-            Price : <FaEthereum className="mt-1 ml-2 mr-1" /> {price}
+            Price : <FaEthereum className="mt-1 ml-2 mr-1" />{" "}
+            {ethers.utils.formatEther(price)}
           </p>
         </div>
       </div>

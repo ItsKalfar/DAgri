@@ -9,8 +9,6 @@ import RetailerInterFace from "../components/RetailerInterFace";
 import ConsumerInterFace from "../components/ConsumerInterFace";
 import SignInPage from "../components/SignInPage";
 import ConnectBtn from "../components/ConnectBtn";
-import Image from "next/image";
-import KhabyImage from "../assets/KhabyLameConnect.png";
 
 export default function Home() {
   const { userProfession, currentAccount, isSingedIn } =
@@ -20,7 +18,7 @@ export default function Home() {
     <>
       <Toaster position="top-center" reverseOrder={false} />
 
-      <div id="index">
+      <div id="index" className="bg-slate-50 min-h-screen">
         {currentAccount ? (
           isSingedIn ? (
             userProfession === "farmer" ? (
@@ -39,7 +37,6 @@ export default function Home() {
           )
         ) : (
           <div className="container mx-auto p-8 flex flex-col items-center w-screen h-screen justify-center">
-            <Image src={KhabyImage} width={200} />
             <ConnectBtn />
           </div>
         )}

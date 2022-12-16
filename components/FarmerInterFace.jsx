@@ -49,18 +49,20 @@ export default function FarmerInterFace() {
                     let Seller = seller.toString();
                     let category = cateory.toUpperCase();
 
-                    return (
-                      <div key={tokenId} className="w-96 ml-4">
-                        <ProductCard
-                          name={productName}
-                          tokenID={tokenID}
-                          quantity={quantity}
-                          price={price}
-                          Category={category}
-                          Seller={Seller}
-                        />
-                      </div>
-                    );
+                    if (Seller.toLowerCase() == currentAccount) {
+                      return (
+                        <div key={tokenId} className="w-96 ml-4 mb-8">
+                          <ProductCard
+                            name={productName}
+                            tokenID={tokenID}
+                            quantity={quantity}
+                            price={price}
+                            Category={category}
+                            Seller={Seller}
+                          />
+                        </div>
+                      );
+                    }
                   })}
                 </div>
               </div>
