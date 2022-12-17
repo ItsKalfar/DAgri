@@ -19,9 +19,9 @@ export default function SellProduct() {
   };
   return (
     <div>
-      <div className="bg-white px-12 py-16 rounded shadow-lg text-black ">
-        <h1 className="uppercase mb-8 text-3xl text-center font-bold ">
-          product details
+      <div className="bg-white px-12 py-16 rounded shadow-lg text-black w-96">
+        <h1 className="uppercase mb-8 text-2xl text-center font-bold">
+          Product Detailes
         </h1>
         <div className="mb-4">
           <label className="block mb-2 text-sm font-medium text-gray-900">

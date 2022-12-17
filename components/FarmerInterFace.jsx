@@ -4,16 +4,17 @@ import Header from "../components/Header";
 import ProductCard from "../components/ProductCard";
 import { Oval } from "react-loader-spinner";
 import { ProjectContext } from "../context/ProjectContext";
+import { AiOutlineArrowRight } from "react-icons/ai";
+import UserDetails from "./UserDetails";
 
 export default function FarmerInterFace() {
-  const { isSignedIn, currentAccount, allProducts, isLoading, userProfession } =
-    useContext(ProjectContext);
+  const { currentAccount, allProducts, isLoading } = useContext(ProjectContext);
   return (
     <div className="h-full">
       <Header />
       <div>
         {currentAccount ? (
-          <div className="container mx-auto">
+          <div className="container-lg mx-auto ">
             {isLoading ? (
               <div className="w-full h-screen flex items-center justify-center">
                 <Oval
@@ -31,39 +32,48 @@ export default function FarmerInterFace() {
               </div>
             ) : (
               <div className="container mx-auto py-8 flex items-start">
-                <SellProduct className="border-black border-2" />
-                <div className="grid md:grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3">
-                  {allProducts.map((product) => {
-                    let {
-                      productName,
-                      tokenId,
-                      productQuantity,
-                      productPrice,
-                      cateory,
-                      seller,
-                    } = product;
+                <div className="flex flex-col items-start">
+                  <UserDetails />
+                  <SellProduct className="border-black border-2" />
+                </div>
 
-                    let tokenID = tokenId.toString();
-                    let quantity = productQuantity.toString();
-                    let price = productPrice.toString();
-                    let Seller = seller.toString();
-                    let category = cateory.toUpperCase();
+                <div className="w-full">
+                  <h1 className="flex uppercase mb-8 text-2xl ml-5 font-bold">
+                    My Listing <AiOutlineArrowRight className="mt-1 ml-4" />
+                  </h1>
+                  <div className="card-box">
+                    {allProducts.map((product) => {
+                      let {
+                        productName,
+                        tokenId,
+                        productQuantity,
+                        productPrice,
+                        cateory,
+                        seller,
+                      } = product;
 
-                    if (Seller.toLowerCase() == currentAccount) {
-                      return (
-                        <div key={tokenId} className="w-96 ml-4 mb-8">
-                          <ProductCard
-                            name={productName}
-                            tokenID={tokenID}
-                            quantity={quantity}
-                            price={price}
-                            Category={category}
-                            Seller={Seller}
-                          />
-                        </div>
-                      );
-                    }
-                  })}
+                      let tokenID = tokenId.toString();
+                      let quantity = productQuantity.toString();
+                      let price = productPrice.toString();
+                      let Seller = seller.toString();
+                      let category = cateory.toUpperCase();
+
+                      if (Seller.toLowerCase() == currentAccount) {
+                        return (
+                          <div key={tokenId} className="mb-8">
+                            <ProductCard
+                              name={productName}
+                              tokenID={tokenID}
+                              quantity={quantity}
+                              price={price}
+                              Category={category}
+                              Seller={Seller}
+                            />
+                          </div>
+                        );
+                      }
+                    })}
+                  </div>
                 </div>
               </div>
             )}

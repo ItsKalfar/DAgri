@@ -54,7 +54,7 @@
           "type": "address"
         }
       ],
-      "name": "ItemBough",
+      "name": "ItemBought",
       "type": "event"
     },
     {
@@ -117,6 +117,68 @@
         }
       ],
       "name": "ItemListed",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "string",
+          "name": "productName",
+          "type": "string"
+        },
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "tokenId",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "productQuantity",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "productPrice",
+          "type": "uint256"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "seller",
+          "type": "address"
+        }
+      ],
+      "name": "ItemPurchased",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "string",
+          "name": "productName",
+          "type": "string"
+        },
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "tokenId",
+          "type": "uint256"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "seller",
+          "type": "address"
+        }
+      ],
+      "name": "ItemUpdated",
       "type": "event"
     },
     {
@@ -291,57 +353,6 @@
           "internalType": "uint256",
           "name": "",
           "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "string",
-          "name": "_ProductName",
-          "type": "string"
-        }
-      ],
-      "name": "getTotalQuantity",
-      "outputs": [
-        {
-          "components": [
-            {
-              "internalType": "string",
-              "name": "productName",
-              "type": "string"
-            },
-            {
-              "internalType": "uint256",
-              "name": "tokenId",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "productQuantity",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "productPrice",
-              "type": "uint256"
-            },
-            {
-              "internalType": "string",
-              "name": "cateory",
-              "type": "string"
-            },
-            {
-              "internalType": "address",
-              "name": "seller",
-              "type": "address"
-            }
-          ],
-          "internalType": "struct SupplyChain.Product",
-          "name": "",
-          "type": "tuple"
         }
       ],
       "stateMutability": "view",
@@ -557,50 +568,6 @@
           "internalType": "uint256",
           "name": "",
           "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "string",
-          "name": "",
-          "type": "string"
-        }
-      ],
-      "name": "s_totalDistibuterInventory",
-      "outputs": [
-        {
-          "internalType": "string",
-          "name": "productName",
-          "type": "string"
-        },
-        {
-          "internalType": "uint256",
-          "name": "tokenId",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "productQuantity",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "productPrice",
-          "type": "uint256"
-        },
-        {
-          "internalType": "string",
-          "name": "cateory",
-          "type": "string"
-        },
-        {
-          "internalType": "address",
-          "name": "seller",
-          "type": "address"
         }
       ],
       "stateMutability": "view",

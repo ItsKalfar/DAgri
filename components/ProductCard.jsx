@@ -156,7 +156,7 @@ export default function ProductCard({
             Product Id : {tokenID}
           </p>
           <p className="block mb-4 text-md font-medium text-gray-900">
-            Product Category : {Category.toUpperCase()}
+            Category : {Category.toUpperCase()}
           </p>
           <p className="block mb-4 text-md font-medium text-gray-900">
             Total Quantity : {quantity} Kg

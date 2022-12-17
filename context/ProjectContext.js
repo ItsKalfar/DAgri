@@ -2,19 +2,9 @@ import React, { useState, createContext, useEffect } from "react";
 import ContractABI from "../constants/ContractABI.json";
 import { ethers } from "ethers";
 import { toast } from "react-hot-toast";
-export const ProjectContext = createContext();
-import {
-  collection,
-  doc,
-  getDoc,
-  getDocs,
-  setDoc,
-  addDoc,
-  query,
-  where,
-} from "firebase/firestore";
+import { collection, getDocs, addDoc, query, where } from "firebase/firestore";
 import { db } from "../firebaseConfig";
-import { BsConeStriped } from "react-icons/bs";
+import { async } from "@firebase/util";
 
 let eth;
 
@@ -22,15 +12,19 @@ if (typeof window !== "undefined") {
   eth = window.ethereum;
 }
 
+export const ProjectContext = createContext();
+
 export const ProjectContextProvider = ({ children }) => {
   const ABI = ContractABI.abi;
   const contractAddress = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS;
   const [currentAccount, setCurrentAccount] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [allProducts, setAllProducts] = useState([]);
+  const [distributerInventory, setDistributerInventory] = useState([]);
+  const [productDistributer, setProductDistributer] = useState([]);
+  const [allOwners, setAllOwners] = useState([]);
   const [isSingedIn, setIsSignedIn] = useState(false);
   const [userProfession, setUserProfession] = useState();
-  const dbRef = collection(db, "users");
 
   /**
    * Prompts user to connect their MetaMask wallet
@@ -214,6 +208,130 @@ export const ProjectContextProvider = ({ children }) => {
             tokenNumber,
             newPrice
           );
+          toast.loading("Updating Price", { duration: 4000 });
+          SupplyChain.on("ItemUpdated", () => toast.success("Price Update"));
+        }
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
+  const getDistributerInventory = async () => {
+    try {
+      if (
+        typeof window.ethereum !== "undefined" ||
+        typeof window.web3 !== "undefined"
+      ) {
+        const { ethereum } = window;
+        if (ethereum) {
+          const provider = new ethers.providers.Web3Provider(ethereum);
+          await provider.send("eth_requestAccounts", []);
+          const signer = provider.getSigner();
+          const SupplyChain = new ethers.Contract(contractAddress, ABI, signer);
+
+          setIsLoading(true);
+
+          let tokenId = await SupplyChain.getTokenId();
+
+          for (let index = 1; index <= tokenId; index++) {
+            let getItem = await SupplyChain.getDistributerInventory(index);
+            if (getItem.tokenId._hex > 0) {
+              setDistributerInventory((prev) => [getItem, ...prev]);
+            }
+          }
+
+          setIsLoading(false);
+        }
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  const buyProduct = async (tokenNumber) => {
+    try {
+      if (
+        typeof window.ethereum !== "undefined" ||
+        typeof window.web3 !== "undefined"
+      ) {
+        const { ethereum } = window;
+        if (ethereum) {
+          const provider = new ethers.providers.Web3Provider(ethereum);
+          const signer = provider.getSigner();
+          const SupplyChain = new ethers.Contract(contractAddress, ABI, signer);
+
+          let buyItem = await SupplyChain.buyItem(tokenNumber);
+          toast.loading("Processing Your Purchase", { duration: 4000 });
+          SupplyChain.on("ItemBought", () => toast.success("Item Purchased"));
+        }
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
+  const purchaseProduct = async (tokenNumber) => {
+    try {
+      if (
+        typeof window.ethereum !== "undefined" ||
+        typeof window.web3 !== "undefined"
+      ) {
+        const { ethereum } = window;
+        if (ethereum) {
+          const provider = new ethers.providers.Web3Provider(ethereum);
+          const signer = provider.getSigner();
+          const SupplyChain = new ethers.Contract(contractAddress, ABI, signer);
+
+          let purchaseItem = await SupplyChain.purchaseItem(tokenNumber);
+          toast.loading("Processing Your Purchase", { duration: 4000 });
+          SupplyChain.on("ItemPurchased", () =>
+            toast.success("Item Purchased")
+          );
+        }
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
+  const getOwners = async (tokenNumber) => {
+    try {
+      if (
+        typeof window.ethereum !== "undefined" ||
+        typeof window.web3 !== "undefined"
+      ) {
+        const { ethereum } = window;
+        if (ethereum) {
+          const provider = new ethers.providers.Web3Provider(ethereum);
+          const signer = provider.getSigner();
+          const SupplyChain = new ethers.Contract(contractAddress, ABI, signer);
+
+          let getOwners = await SupplyChain.getAllOwners(tokenNumber);
+          toast.loading("Getting Owner Details", { duration: 1000 });
+          setAllOwners(getOwners);
+        }
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
+  const getDistributer = async (productName) => {
+    try {
+      if (
+        typeof window.ethereum !== "undefined" ||
+        typeof window.web3 !== "undefined"
+      ) {
+        const { ethereum } = window;
+        if (ethereum) {
+          const provider = new ethers.providers.Web3Provider(ethereum);
+          const signer = provider.getSigner();
+          const SupplyChain = new ethers.Contract(contractAddress, ABI, signer);
+          let getDistributerProdutcs = await SupplyChain.searchDistributer(
+            productName
+          );
+          setProductDistributer(getDistributerProdutcs);
         }
       }
     } catch (error) {
@@ -245,6 +363,11 @@ export const ProjectContextProvider = ({ children }) => {
         isLoading,
         cancelProduct,
         updateProduct,
+        buyProduct,
+        purchaseProduct,
+        getDistributerInventory,
+        getOwners,
+        allOwners,
       }}
     >
       {children}
