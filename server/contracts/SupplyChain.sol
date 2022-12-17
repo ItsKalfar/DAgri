@@ -61,6 +61,13 @@ contract SupplyChain {
         uint256 indexed tokenId,
         address indexed seller
     );
+    event ItemPurchased(
+        string indexed productName,
+        uint256 indexed tokenId,
+        uint256 productQuantity,
+        uint256 productPrice,
+        address indexed seller
+    );
 
     // Modifiers
     // Item not listed Yet
@@ -159,6 +166,13 @@ contract SupplyChain {
             msg.sender
         );
         payable(product.seller).transfer(product.productPrice);
+        emit ItemBought(
+            product.productName,
+            product.tokenId,
+            product.productQuantity,
+            newPrice,
+            msg.sender
+        );
     }
 
     // Retailer's Functions
@@ -176,6 +190,13 @@ contract SupplyChain {
         delete (s_productDistributer[product.productName]);
         s_productOwners[product.tokenId].retailerAddress = msg.sender;
         payable(product.seller).transfer(product.productPrice);
+        emit ItemPurchased(
+            product.productName,
+            product.tokenId,
+            product.productQuantity,
+            product.productPrice,
+            msg.sender
+        );
     }
 
     // Getter functions
