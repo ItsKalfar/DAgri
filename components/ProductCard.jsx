@@ -31,7 +31,7 @@ export default function ProductCard({
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [newPrice, setNewPrice] = useState(0.0);
   const [sellerAddress, setSellerAddress] = useState();
-  const { currentAccount, cancelProduct, updateProduct } =
+  const { currentAccount, cancelProduct, updateProduct, buyProduct } =
     useContext(ProjectContext);
 
   useEffect(() => {
@@ -53,6 +53,11 @@ export default function ProductCard({
     updateProduct(tokenID, parsedPrice);
 
     setModalIsOpen(!modalIsOpen);
+  };
+
+  const handleBuying = () => {
+    let tokenNumber = parseInt(tokenID);
+    buyProduct(tokenNumber);
   };
 
   return (
@@ -92,7 +97,8 @@ export default function ProductCard({
             </p>
             <div>
               <div className="flex mb-6 text-md font-medium text-gray-900 items-start justify-center">
-                Price : <FaEthereum className="mt-1 ml-2 mr-1" /> {price}
+                Price : <FaEthereum className="mt-1 ml-2 mr-1" />{" "}
+                {ethers.utils.formatEther(price)}
               </div>
             </div>
           </div>
@@ -127,7 +133,10 @@ export default function ProductCard({
             </div>
           ) : (
             <div>
-              <button className="bg-blue-600 hover:bg-blue-900 rounded-full text-white  py-2 px-8 focus:outline-none focus:shadow-outline uppercase flex items-center justify-center cursor-pointer font-semibold">
+              <button
+                className="bg-blue-600 hover:bg-blue-900 rounded-full text-white  py-2 px-8 focus:outline-none focus:shadow-outline uppercase flex items-center justify-center cursor-pointer font-semibold"
+                onClick={handleBuying}
+              >
                 buy
               </button>
             </div>

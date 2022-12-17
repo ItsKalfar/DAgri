@@ -343,8 +343,10 @@ export const ProjectContextProvider = ({ children }) => {
     checkIfWalletIsConnected();
     if (currentAccount) {
       getAllProducts();
+      getDistributerInventory();
     }
     checkUser();
+
     console.log(currentAccount);
     console.log("fired");
   }, [currentAccount]);
@@ -364,8 +366,8 @@ export const ProjectContextProvider = ({ children }) => {
         cancelProduct,
         updateProduct,
         buyProduct,
+        distributerInventory,
         purchaseProduct,
-        getDistributerInventory,
         getOwners,
         allOwners,
       }}

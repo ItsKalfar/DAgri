@@ -7,15 +7,12 @@ export default function SellProduct() {
   const [values, setValues] = useState({
     name: "",
     quantity: 0,
-    price: 0.0,
+    price: "",
     category: "",
   });
 
   const listTheProduct = () => {
-    let parsedPrice = parseFloat(values.price);
-    console.log(values.price);
-    console.log(parsedPrice);
-    listProduct(values.name, values.quantity, parsedPrice, values.category);
+    listProduct(values.name, values.quantity, values.price, values.category);
   };
   return (
     <div>

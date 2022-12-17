@@ -9,18 +9,18 @@ import { AiOutlineArrowRight } from "react-icons/ai";
 import UserDetails from "./UserDetails";
 
 export default function DistributerInterFace() {
-  const { currentAccount, allProducts, isLoading, getDistributerInventory } =
+  const { currentAccount, allProducts, isLoading, distributerInventory } =
     useContext(ProjectContext);
   return (
     <div className="h-full">
       <Header />
       <div className="container mx-auto py-8 flex items-start">
-        <div className="">
+        <div>
           <div>
             {currentAccount ? (
               <div className="container mx-auto">
                 {isLoading ? (
-                  <div className="w-full h-screen flex items-center justify-center">
+                  <div className="h-screen flex items-center justify-center">
                     <Oval
                       height={40}
                       width={40}
@@ -42,11 +42,44 @@ export default function DistributerInterFace() {
                         My Inventory{" "}
                         <AiOutlineArrowRight className="mt-1 ml-4" />
                       </h1>
+                      <div className="card-box">
+                        <Swiper>
+                          {distributerInventory.map((product) => {
+                            let {
+                              productName,
+                              tokenId,
+                              productQuantity,
+                              productPrice,
+                              cateory,
+                              seller,
+                            } = product;
+
+                            let tokenID = tokenId.toString();
+                            let quantity = productQuantity.toString();
+                            let price = productPrice.toString();
+                            let Seller = seller.toString();
+                            let category = cateory.toUpperCase();
+                            <SwiperSlide
+                              key={product.tokenId}
+                              className="w-96 ml-4 mb-8"
+                            >
+                              <ProductCard
+                                name={productName}
+                                tokenID={tokenID}
+                                quantity={quantity}
+                                price={price}
+                                Category={category}
+                                Seller={Seller}
+                              />
+                            </SwiperSlide>;
+                          })}
+                        </Swiper>
+                      </div>
                       <h1 className="flex uppercase mb-8 text-2xl ml-5 font-bold">
                         MarketPlace{" "}
                         <AiOutlineArrowRight className="mt-1 ml-4" />
                       </h1>
-                      <div className="grid md:grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3">
+                      <div className="card-box">
                         {allProducts.map((product) => {
                           let {
                             productName,
