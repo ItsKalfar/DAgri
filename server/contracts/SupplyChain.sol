@@ -30,8 +30,6 @@ contract SupplyChain {
     mapping(uint256 => Product) public s_farmerInventory;
     // Distributer inventory - tokenId => Product
     mapping(uint256 => Product) public s_distributerInventory;
-    // Total stock in distributer inventory - Poducts name => Product
-    mapping(string => Product) public s_totalDistibuterInventory;
     // Token Id to all the owners
     mapping(uint256 => Owners) public s_productOwners;
     // Product Name => List of products in distributers inventory
@@ -46,7 +44,7 @@ contract SupplyChain {
         uint256 productPrice,
         address indexed seller
     );
-    event ItemBough(
+    event ItemBought(
         string indexed productName,
         uint256 indexed tokenId,
         uint256 productQuantity,
@@ -54,6 +52,11 @@ contract SupplyChain {
         address indexed seller
     );
     event ItemCanceled(
+        string indexed productName,
+        uint256 indexed tokenId,
+        address indexed seller
+    );
+    event ItemUpdated(
         string indexed productName,
         uint256 indexed tokenId,
         address indexed seller
@@ -146,14 +149,6 @@ contract SupplyChain {
             product.cateory,
             msg.sender
         );
-        s_totalDistibuterInventory[product.productName] = Product(
-            product.productName,
-            product.tokenId,
-            product.productQuantity,
-            newPrice,
-            product.cateory,
-            msg.sender
-        );
         s_productOwners[product.tokenId].distributerAddress = msg.sender;
         s_productDistributer[product.productName] = Product(
             product.productName,
@@ -164,20 +159,6 @@ contract SupplyChain {
             msg.sender
         );
         payable(product.seller).transfer(product.productPrice);
-
-        // To keep track of total quantity of specific product
-        if (
-            keccak256(
-                abi.encodePacked(
-                    s_totalDistibuterInventory[product.productName].productName
-                )
-            ) == keccak256(abi.encodePacked(product.productName))
-        ) {
-            s_totalDistibuterInventory[product.productName].productQuantity =
-                s_totalDistibuterInventory[product.productName]
-                    .productQuantity +
-                product.productQuantity;
-        }
     }
 
     // Retailer's Functions
@@ -192,9 +173,6 @@ contract SupplyChain {
             revert PriceNotMet();
         }
         delete (s_distributerInventory[_tokenID]);
-        s_totalDistibuterInventory[product.productName].productQuantity =
-            s_totalDistibuterInventory[product.productName].productQuantity -
-            product.productQuantity;
         delete (s_productDistributer[product.productName]);
         s_productOwners[product.tokenId].retailerAddress = msg.sender;
         payable(product.seller).transfer(product.productPrice);
@@ -212,12 +190,6 @@ contract SupplyChain {
         uint256 _tokenID
     ) external view returns (Product memory) {
         return s_distributerInventory[_tokenID];
-    }
-
-    function getTotalQuantity(
-        string memory _ProductName
-    ) external view returns (Product memory) {
-        return s_totalDistibuterInventory[_ProductName];
     }
 
     function getAllOwners(
