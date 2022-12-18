@@ -2,6 +2,7 @@
 pragma solidity ^0.8.17;
 
 // Errors
+error NotListed();
 error PriceMustNotZero();
 error PriceNotMet();
 error NotOwner();
@@ -69,6 +70,14 @@ contract SupplyChain {
     );
 
     // Modifiers
+    // Item not listed Yet
+    modifier notListed(uint256 _tokenID) {
+        Product memory product = s_farmerInventory[_tokenID];
+        if (product.productPrice <= 0) {
+            revert NotListed();
+        }
+        _;
+    }
 
     // Can be called only by owner
     modifier isOwner(uint256 _tokenID) {
@@ -113,13 +122,15 @@ contract SupplyChain {
     function updateListing(
         uint256 _tokenID,
         uint256 _newPrice
-    ) external isOwner(_tokenID) {
+    ) external notListed(_tokenID) isOwner(_tokenID) {
         s_farmerInventory[_tokenID].productPrice = _newPrice;
     }
 
     /// @notice Cancel the listing of a product
     /// @param _tokenID - The token id of the product to be canceled
-    function cancelItem(uint256 _tokenID) external isOwner(_tokenID) {
+    function cancelItem(
+        uint256 _tokenID
+    ) external notListed(_tokenID) isOwner(_tokenID) {
         Product memory product = s_farmerInventory[_tokenID];
         delete (s_farmerInventory[_tokenID]);
         emit ItemCanceled(product.productName, _tokenID, product.seller);
@@ -128,7 +139,7 @@ contract SupplyChain {
     // Distributer functions
     /// @notice Buy the product from farmer and add it into distributer's inventory
     /// @param _tokenID - The token id of the product to be bought
-    function buyItem(uint256 _tokenID) external payable {
+    function buyItem(uint256 _tokenID) external payable notListed(_tokenID) {
         Product memory product = s_farmerInventory[_tokenID];
         if (msg.value != product.productPrice) {
             revert PriceNotMet();
@@ -154,7 +165,10 @@ contract SupplyChain {
             product.cateory,
             msg.sender
         );
-        payable(product.seller).transfer(product.productPrice);
+        (bool success, ) = payable(product.seller).call{
+            value: product.productPrice
+        }("");
+        require(success, "call failed");
         emit ItemBought(
             product.productName,
             product.tokenId,
@@ -169,13 +183,19 @@ contract SupplyChain {
     /// @param _tokenID - The token id of the product to be bought
     function purchaseItem(uint256 _tokenID) external payable {
         Product memory product = s_distributerInventory[_tokenID];
+        if (product.productPrice < 0) {
+            revert NotListed();
+        }
         if (msg.value != product.productPrice) {
             revert PriceNotMet();
         }
         delete (s_distributerInventory[_tokenID]);
         delete (s_productDistributer[product.productName]);
         s_productOwners[product.tokenId].retailerAddress = msg.sender;
-        payable(product.seller).transfer(product.productPrice);
+        (bool success, ) = payable(product.seller).call{
+            value: product.productPrice
+        }("");
+        require(success, "call failed");
         emit ItemPurchased(
             product.productName,
             product.tokenId,
