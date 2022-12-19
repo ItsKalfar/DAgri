@@ -1,11 +1,10 @@
 import React, { useState, useContext } from "react";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../firebaseConfig";
-import { async } from "@firebase/util";
 import { ProjectContext } from "../context/ProjectContext";
 import { toast } from "react-hot-toast";
 import { GrLocation, GrUserWorker } from "react-icons/gr";
-import { BsPersonCircle, BsPerson } from "react-icons/bs";
+import { BsPerson } from "react-icons/bs";
 
 export default function UserDetails() {
   const { currentAccount } = useContext(ProjectContext);

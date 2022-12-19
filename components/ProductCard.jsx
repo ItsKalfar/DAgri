@@ -38,6 +38,7 @@ export default function ProductCard({
     updateProduct,
     buyProduct,
     purchaseProduct,
+    userProfession,
   } = useContext(ProjectContext);
 
   useEffect(() => {
@@ -81,26 +82,26 @@ export default function ProductCard({
               product details
             </h1>
 
-            <p className="block mb-6 text-md font-medium text-gray-900">
+            <div className="block mb-6 text-md font-medium text-gray-900">
               Product Name : {name.toUpperCase()}
-            </p>
-            <p className="block mb-6 text-md font-medium text-gray-900">
+            </div>
+            <div className="block mb-6 text-md font-medium text-gray-900">
               Product Id : {tokenID}
-            </p>
-            <p className="block mb-6 text-md font-medium text-gray-900">
+            </div>
+            <div className="block mb-6 text-md font-medium text-gray-900">
               Product Category : {Category.toUpperCase()}
-            </p>
+            </div>
             <p className="block mb-6 text-md font-medium text-gray-900">
               Total Quantity : {quantity} Kg
             </p>
-            <p className="flex mb-6 text-md font-medium text-gray-900 items-start justify-center">
+            <div className="flex mb-6 text-md font-medium text-gray-900 items-start justify-center">
               Owned By :{" "}
               {currentAccount === Seller.toLowerCase() ? (
                 "You"
               ) : (
                 <div className="ml-1">{sellerAddress}</div>
               )}
-            </p>
+            </div>
             <div>
               <div className="flex mb-6 text-md font-medium text-gray-900 items-start justify-center">
                 Price : <FaEthereum className="mt-1 ml-2 mr-1" />{" "}
@@ -108,7 +109,8 @@ export default function ProductCard({
               </div>
             </div>
           </div>
-          {currentAccount === Seller.toLowerCase() ? (
+          {currentAccount === Seller.toLowerCase() &&
+          userProfession !== "distributer" ? (
             <div className="w-full ">
               <div className="mb-4 w-full">
                 <label className="block mb-2 text-sm font-medium text-gray-900">
@@ -137,7 +139,7 @@ export default function ProductCard({
                 </button>
               </div>
             </div>
-          ) : (
+          ) : userProfession == "distributer" ? (
             <div>
               <button
                 className="bg-blue-600 hover:bg-blue-900 rounded-full text-white  py-2 px-8 focus:outline-none focus:shadow-outline uppercase flex items-center justify-center cursor-pointer font-semibold"
@@ -146,6 +148,8 @@ export default function ProductCard({
                 buy
               </button>
             </div>
+          ) : (
+            <div>Purchase</div>
           )}
         </div>
       </Modal>
@@ -164,22 +168,22 @@ export default function ProductCard({
           onClick={() => setModalIsOpen(!modalIsOpen)}
         >
           {" "}
-          <p className="flex flex-col items-start mb-4 text-md font-medium text-gray-900">
+          <div className="flex flex-col items-start mb-4 text-md font-medium text-gray-900">
             <div>Product Name :</div> <div>{name.toUpperCase()}</div>
-          </p>
-          <p className="block mb-4 text-md font-medium text-gray-900">
+          </div>
+          <div className="block mb-4 text-md font-medium text-gray-900">
             Product Id : {tokenID}
-          </p>
-          <p className="block mb-4 text-md font-medium text-gray-900">
+          </div>
+          <div className="block mb-4 text-md font-medium text-gray-900">
             Category : {Category.toUpperCase()}
-          </p>
-          <p className="block mb-4 text-md font-medium text-gray-900">
+          </div>
+          <div className="block mb-4 text-md font-medium text-gray-900">
             Total Quantity : {quantity} Kg
-          </p>
-          <p className="flex mb-6 text-md font-medium text-gray-900 items-start">
+          </div>
+          <div className="flex mb-6 text-md font-medium text-gray-900 items-start">
             Price : <FaEthereum className="mt-1 ml-2 mr-1" />{" "}
             {ethers.utils.formatEther(price)}
-          </p>
+          </div>
         </div>
       </div>
     </>

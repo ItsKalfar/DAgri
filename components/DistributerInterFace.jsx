@@ -33,7 +33,7 @@ export default function DistributerInterFace() {
                 />
               </div>
             ) : (
-              <div className="container mx-auto py-8 flex items-start overflow-hidden ">
+              <div className="container mx-auto py-8 flex items-start  ">
                 <UserDetails />
                 <div className="flex flex-col items-start w-full z-0 ml-5">
                   {" "}
@@ -57,10 +57,10 @@ export default function DistributerInterFace() {
                       },
                       1280: {
                         slidesPerView: 4.25,
-                        spaceBetween: 30,
+                        spaceBetween: 20,
                       },
                     }}
-                    className="w-full ml-8 z-0 max-w-fit"
+                    className="w-full ml-8 z-0"
                   >
                     {distributerInventory.map((product) => {
                       let {
@@ -92,39 +92,41 @@ export default function DistributerInterFace() {
                       );
                     })}
                   </Swiper>
-                  <h1 className="flex uppercase mb-8 text-2xl ml-5 font-bold">
-                    MarketPlace <AiOutlineArrowRight className="mt-1 ml-4" />
-                  </h1>
-                  <div className="card-box">
-                    {allProducts.map((product) => {
-                      let {
-                        productName,
-                        tokenId,
-                        productQuantity,
-                        productPrice,
-                        cateory,
-                        seller,
-                      } = product;
+                  <div className="w-full flex flex-col items-start">
+                    <h1 className="flex uppercase mb-8 text-2xl ml-5 font-bold">
+                      MarketPlace <AiOutlineArrowRight className="mt-1 ml-4" />
+                    </h1>
+                    <div className="card-box">
+                      {allProducts.map((product) => {
+                        let {
+                          productName,
+                          tokenId,
+                          productQuantity,
+                          productPrice,
+                          cateory,
+                          seller,
+                        } = product;
 
-                      let tokenID = tokenId.toString();
-                      let quantity = productQuantity.toString();
-                      let price = productPrice.toString();
-                      let Seller = seller.toString();
-                      let category = cateory.toUpperCase();
+                        let tokenID = tokenId.toString();
+                        let quantity = productQuantity.toString();
+                        let price = productPrice.toString();
+                        let Seller = seller.toString();
+                        let category = cateory.toUpperCase();
 
-                      return (
-                        <div key={tokenId} className="mb-8">
-                          <ProductCard
-                            name={productName}
-                            tokenID={tokenID}
-                            quantity={quantity}
-                            price={price}
-                            Category={category}
-                            Seller={Seller}
-                          />
-                        </div>
-                      );
-                    })}
+                        return (
+                          <div key={tokenId} className="mb-8">
+                            <ProductCard
+                              name={productName}
+                              tokenID={tokenID}
+                              quantity={quantity}
+                              price={price}
+                              Category={category}
+                              Seller={Seller}
+                            />
+                          </div>
+                        );
+                      })}
+                    </div>
                   </div>
                 </div>
               </div>

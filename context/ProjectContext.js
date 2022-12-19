@@ -315,7 +315,6 @@ export const ProjectContextProvider = ({ children }) => {
           const SupplyChain = new ethers.Contract(contractAddress, ABI, signer);
 
           let getOwners = await SupplyChain.getAllOwners(tokenNumber);
-          toast.loading("Getting Owner Details", { duration: 1000 });
           setAllOwners(getOwners);
         }
       }
@@ -338,7 +337,7 @@ export const ProjectContextProvider = ({ children }) => {
           let getDistributerProdutcs = await SupplyChain.searchDistributer(
             productName
           );
-          setProductDistributer(getDistributerProdutcs);
+          setProductDistributer((prev) => [getDistributerProdutcs, ...prev]);
         }
       }
     } catch (error) {
@@ -351,7 +350,6 @@ export const ProjectContextProvider = ({ children }) => {
     if (currentAccount) {
       getAllProducts();
       getDistributerInventory();
-      console.log(distributerInventory);
     }
     checkUser();
   }, [currentAccount]);
@@ -372,6 +370,8 @@ export const ProjectContextProvider = ({ children }) => {
         updateProduct,
         buyProduct,
         distributerInventory,
+        productDistributer,
+        getDistributer,
         purchaseProduct,
         getOwners,
         allOwners,

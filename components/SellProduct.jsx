@@ -29,7 +29,10 @@ export default function SellProduct() {
             type="text"
             placeholder="Enter product name..."
             onChange={(e) =>
-              setValues((prev) => ({ ...prev, name: e.target.value }))
+              setValues((prev) => ({
+                ...prev,
+                name: e.target.value.toLowerCase(),
+              }))
             }
           />
         </div>

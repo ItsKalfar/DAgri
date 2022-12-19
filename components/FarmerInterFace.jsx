@@ -37,7 +37,7 @@ export default function FarmerInterFace() {
                   <UserDetails />
                 </div>
 
-                <div className="w-full">
+                <div className="w-full flex flex-col items-start">
                   <h1 className="flex uppercase mb-8 text-2xl ml-5 font-bold">
                     My Listing <AiOutlineArrowRight className="mt-1 ml-4" />
                   </h1>

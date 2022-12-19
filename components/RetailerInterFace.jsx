@@ -7,10 +7,16 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { AiOutlineArrowRight } from "react-icons/ai";
 import UserDetails from "./UserDetails";
+import SearchDistributer from "./SearchDistributer";
 
 export default function RetailerInterFace() {
-  const { currentAccount, allProducts, isLoading, distributerInventory } =
-    useContext(ProjectContext);
+  const {
+    currentAccount,
+    allProducts,
+    isLoading,
+    distributerInventory,
+    productDistributer,
+  } = useContext(ProjectContext);
   return (
     <div className="h-full">
       <Header />
@@ -34,41 +40,110 @@ export default function RetailerInterFace() {
               </div>
             ) : (
               <div className="container mx-auto py-8 flex items-start ">
-                <UserDetails />
+                <div className="flex flex-col items-start">
+                  <SearchDistributer />
+                  <UserDetails />
+                </div>
+
                 <div className="flex w-full ml-5 flex-col">
-                  <h1 className="flex  uppercase mb-8 text-2xl font-bold">
-                    MarketPlace <AiOutlineArrowRight className="mt-1 ml-4" />
-                  </h1>
-                  <div className="card-box">
-                    {allProducts.map((product) => {
-                      let {
-                        productName,
-                        tokenId,
-                        productQuantity,
-                        productPrice,
-                        cateory,
-                        seller,
-                      } = product;
+                  <div className="flex flex-col">
+                    <h1 className="flex  uppercase mb-8 text-2xl font-bold">
+                      Distributers <AiOutlineArrowRight className="mt-1 ml-4" />
+                    </h1>
+                    <Swiper
+                      autoplay={false}
+                      loop={true}
+                      spaceBetween={10}
+                      slidesPerView="auto"
+                      breakpoints={{
+                        320: {
+                          slidesPerView: 1.25,
+                          spaceBetween: 30,
+                        },
 
-                      let tokenID = tokenId.toString();
-                      let quantity = productQuantity.toString();
-                      let price = productPrice.toString();
-                      let Seller = seller.toString();
-                      let category = cateory.toUpperCase();
+                        1024: {
+                          slidesPerView: 2.25,
+                          spaceBetween: 20,
+                        },
+                        1280: {
+                          slidesPerView: 4.25,
+                          spaceBetween: 30,
+                        },
+                      }}
+                      className="w-full ml-8 z-0 max-w-fit"
+                    >
+                      {productDistributer ? (
+                        productDistributer.map((product) => {
+                          let {
+                            productName,
+                            tokenId,
+                            productQuantity,
+                            productPrice,
+                            cateory,
+                            seller,
+                          } = product;
 
-                      return (
-                        <div key={tokenId} className="mb-8">
-                          <ProductCard
-                            name={productName}
-                            tokenID={tokenID}
-                            quantity={quantity}
-                            price={price}
-                            Category={category}
-                            Seller={Seller}
-                          />
+                          let tokenID = tokenId.toString();
+                          let quantity = productQuantity.toString();
+                          let price = productPrice.toString();
+                          let Seller = seller.toString();
+                          let category = cateory.toUpperCase();
+
+                          return (
+                            <SwiperSlide key={tokenId} className="mb-8">
+                              <ProductCard
+                                name={productName}
+                                tokenID={tokenID}
+                                quantity={quantity}
+                                price={price}
+                                Category={category}
+                                Seller={Seller}
+                              />
+                            </SwiperSlide>
+                          );
+                        })
+                      ) : (
+                        <div>
+                          <h1>Not Found</h1>
                         </div>
-                      );
-                    })}
+                      )}
+                    </Swiper>
+                  </div>
+                  <div>
+                    <h1 className="flex uppercase mb-8 text-2xl ml-5 font-bold">
+                      MarketPlace <AiOutlineArrowRight className="mt-1 ml-4" />
+                    </h1>
+                    <div className="card-box">
+                      {distributerInventory.map((product) => {
+                        let {
+                          productName,
+                          tokenId,
+                          productQuantity,
+                          productPrice,
+                          cateory,
+                          seller,
+                        } = product;
+
+                        let tokenID = tokenId.toString();
+                        let quantity = productQuantity.toString();
+                        let price = productPrice.toString();
+                        let Seller = seller.toString();
+                        let category = cateory.toUpperCase();
+
+                        return (
+                          <div key={tokenId} className="mb-8">
+                            <ProductCard
+                              name={productName}
+                              tokenID={tokenID}
+                              quantity={quantity}
+                              price={price}
+                              Category={category}
+                              Seller={Seller}
+                            />
+                          </div>
+                        );
+                      })}
+                    </div>
                   </div>
                 </div>
               </div>
