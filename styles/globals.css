@@ -3,12 +3,10 @@
 @tailwind utilities;
 
 .card-box {
-  margin-left: 1rem;
   display: grid;
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  border: 2px solid red;
 }
 
 @media screen and (min-width: 414px) {

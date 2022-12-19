@@ -14,11 +14,11 @@ export default function DistributerInterFace() {
   return (
     <div className="h-full">
       <Header />
-      <div className="container mx-auto py-8 flex items-start">
+      <div className="container-lg mx-auto">
         {currentAccount ? (
           <div>
             {isLoading ? (
-              <div className="h-screen flex items-center justify-center">
+              <div className="w-full h-screen flex items-center justify-center">
                 <Oval
                   height={40}
                   width={40}
@@ -33,46 +33,65 @@ export default function DistributerInterFace() {
                 />
               </div>
             ) : (
-              <div className="py-8 flex items-start justify-between ">
+              <div className="container mx-auto py-8 flex items-start overflow-hidden ">
                 <UserDetails />
-                <div className="flex flex-col items-start w-full">
+                <div className="flex flex-col items-start w-full z-0 ml-5">
                   {" "}
                   <h1 className="flex uppercase mb-8 text-2xl ml-5 font-bold">
                     My Inventory <AiOutlineArrowRight className="mt-1 ml-4" />
                   </h1>
-                  <div className="card-box">
-                    <Swiper>
-                      {distributerInventory.map((product) => {
-                        let {
-                          productName,
-                          tokenId,
-                          productQuantity,
-                          productPrice,
-                          cateory,
-                          seller,
-                        } = product;
+                  <Swiper
+                    autoplay={false}
+                    loop={true}
+                    spaceBetween={10}
+                    slidesPerView="auto"
+                    breakpoints={{
+                      320: {
+                        slidesPerView: 1.25,
+                        spaceBetween: 30,
+                      },
 
-                        let tokenID = tokenId.toString();
-                        let quantity = productQuantity.toString();
+                      1024: {
+                        slidesPerView: 2.25,
+                        spaceBetween: 20,
+                      },
+                      1280: {
+                        slidesPerView: 4.25,
+                        spaceBetween: 30,
+                      },
+                    }}
+                    className="w-full ml-8 z-0 max-w-fit"
+                  >
+                    {distributerInventory.map((product) => {
+                      let {
+                        productName,
+                        tokenId,
+                        productQuantity,
+                        productPrice,
+                        cateory,
+                        seller,
+                      } = product;
 
-                        let Seller = seller.toString();
-                        let category = cateory.toUpperCase();
-                        <SwiperSlide
-                          key={product.tokenId}
-                          className="w-96 mb-8"
-                        >
+                      let tokenID = tokenId.toString();
+                      let quantity = productQuantity.toString();
+                      let price = productPrice.toString();
+                      let Seller = seller.toString();
+                      let category = cateory.toUpperCase();
+
+                      return (
+                        <SwiperSlide key={tokenId} className="mb-8">
                           <ProductCard
                             name={productName}
                             tokenID={tokenID}
                             quantity={quantity}
-                            price={productPrice}
+                            price={price}
                             Category={category}
                             Seller={Seller}
                           />
-                        </SwiperSlide>;
-                      })}
-                    </Swiper>
-                  </div>
+                        </SwiperSlide>
+                      );
+                    })}
+                  </Swiper>
                   <h1 className="flex uppercase mb-8 text-2xl ml-5 font-bold">
                     MarketPlace <AiOutlineArrowRight className="mt-1 ml-4" />
                   </h1>
@@ -94,7 +113,7 @@ export default function DistributerInterFace() {
                       let category = cateory.toUpperCase();
 
                       return (
-                        <div key={tokenId} className="w-96 ml-4 mb-8">
+                        <div key={tokenId} className="mb-8">
                           <ProductCard
                             name={productName}
                             tokenID={tokenID}

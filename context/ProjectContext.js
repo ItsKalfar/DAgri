@@ -234,7 +234,7 @@ export const ProjectContextProvider = ({ children }) => {
 
           let tokenId = await SupplyChain.getTokenId();
 
-          for (let index = 1; index <= tokenId; index++) {
+          for (let index = 0; index <= tokenId; index++) {
             let getItem = await SupplyChain.getDistributerInventory(index);
             if (getItem.tokenId._hex > 0) {
               setDistributerInventory((prev) => [getItem, ...prev]);
@@ -249,7 +249,7 @@ export const ProjectContextProvider = ({ children }) => {
     }
   };
 
-  const buyProduct = async (tokenNumber) => {
+  const buyProduct = async (tokenNumber, price) => {
     try {
       if (
         typeof window.ethereum !== "undefined" ||
@@ -263,18 +263,20 @@ export const ProjectContextProvider = ({ children }) => {
           let token = parseInt(tokenNumber);
 
           let buyItem = await SupplyChain.buyItem(token, {
-            gasLimit: 50000,
+            value: price,
           });
-          toast.loading("Processing Your Purchase", { duration: 4000 });
-          SupplyChain.on("ItemBought", () => toast.success("Item Purchased"));
+          toast.loading("Buying product...", { duration: 4000 });
+          SupplyChain.on("ItemBought", () =>
+            toast.success("Item Bought! Added to Your inventory")
+          );
         }
       }
     } catch (error) {
-      console.log(error.message);
+      toast.error(error.message);
     }
   };
 
-  const purchaseProduct = async (tokenNumber) => {
+  const purchaseProduct = async (tokenNumber, price) => {
     try {
       if (
         typeof window.ethereum !== "undefined" ||
@@ -286,10 +288,12 @@ export const ProjectContextProvider = ({ children }) => {
           const signer = provider.getSigner();
           const SupplyChain = new ethers.Contract(contractAddress, ABI, signer);
 
-          let purchaseItem = await SupplyChain.purchaseItem(tokenNumber);
-          toast.loading("Processing Your Purchase", { duration: 4000 });
+          let purchaseItem = await SupplyChain.purchaseItem(tokenNumber, {
+            value: price,
+          });
+          toast.loading("Processing Your Purchase...", { duration: 4000 });
           SupplyChain.on("ItemPurchased", () =>
-            toast.success("Item Purchased")
+            toast.success("Item Purchased!")
           );
         }
       }
@@ -347,11 +351,9 @@ export const ProjectContextProvider = ({ children }) => {
     if (currentAccount) {
       getAllProducts();
       getDistributerInventory();
+      console.log(distributerInventory);
     }
     checkUser();
-
-    console.log(currentAccount);
-    console.log("fired");
   }, [currentAccount]);
 
   return (

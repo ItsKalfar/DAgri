@@ -17,6 +17,7 @@ const customStyles = {
     transform: "translate(-50%, -50%)",
     border: "none",
     padding: "0 0 0 0",
+    zIndex: "100",
   },
 };
 
@@ -31,8 +32,13 @@ export default function ProductCard({
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [newPrice, setNewPrice] = useState(0.0);
   const [sellerAddress, setSellerAddress] = useState();
-  const { currentAccount, cancelProduct, updateProduct, buyProduct } =
-    useContext(ProjectContext);
+  const {
+    currentAccount,
+    cancelProduct,
+    updateProduct,
+    buyProduct,
+    purchaseProduct,
+  } = useContext(ProjectContext);
 
   useEffect(() => {
     if (currentAccount === Seller.toLowerCase()) {
@@ -56,8 +62,8 @@ export default function ProductCard({
   };
 
   const handleBuying = () => {
-    let tokenNumber = parseInt(tokenID);
-    buyProduct(tokenNumber);
+    buyProduct(tokenID, price);
+    setModalIsOpen(!modalIsOpen);
   };
 
   return (
@@ -97,7 +103,8 @@ export default function ProductCard({
             </p>
             <div>
               <div className="flex mb-6 text-md font-medium text-gray-900 items-start justify-center">
-                Price : <FaEthereum className="mt-1 ml-2 mr-1" /> {price}
+                Price : <FaEthereum className="mt-1 ml-2 mr-1" />{" "}
+                {ethers.utils.formatEther(price)}
               </div>
             </div>
           </div>
@@ -142,7 +149,7 @@ export default function ProductCard({
           )}
         </div>
       </Modal>
-      <div className="bg-white shadow-lg px-6 py-8 rounded-lg">
+      <div className="bg-white shadow-lg px-6 py-8 rounded-lg z-10">
         <div
           className="py-1 px-4 bg-gray-200 rounded-full text-gray-500 flex items-center  mb-4 cursor-copy  w-1/2 "
           onClick={() => toast.success("Copied to Clipboard")}
@@ -157,8 +164,8 @@ export default function ProductCard({
           onClick={() => setModalIsOpen(!modalIsOpen)}
         >
           {" "}
-          <p className="block mb-4 text-md font-medium text-gray-900">
-            Product Name : {name.toUpperCase()}
+          <p className="flex flex-col items-start mb-4 text-md font-medium text-gray-900">
+            <div>Product Name :</div> <div>{name.toUpperCase()}</div>
           </p>
           <p className="block mb-4 text-md font-medium text-gray-900">
             Product Id : {tokenID}

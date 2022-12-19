@@ -31,7 +31,7 @@ export default function FarmerInterFace() {
                 />
               </div>
             ) : (
-              <div className="container border-2 border-black mx-auto py-8 flex items-start">
+              <div className="container mx-auto py-8 flex items-start">
                 <div className="flex flex-col items-start">
                   <SellProduct />
                   <UserDetails />
@@ -41,7 +41,7 @@ export default function FarmerInterFace() {
                   <h1 className="flex uppercase mb-8 text-2xl ml-5 font-bold">
                     My Listing <AiOutlineArrowRight className="mt-1 ml-4" />
                   </h1>
-                  <div className="card-box">
+                  <div className="card-box ml-5">
                     {allProducts.map((product) => {
                       let {
                         productName,
