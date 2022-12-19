@@ -35,7 +35,7 @@ export default function DistributerInterFace() {
             ) : (
               <div className="container mx-auto py-8 flex items-start  ">
                 <UserDetails />
-                <div className="flex flex-col items-start w-full z-0 ml-5">
+                <div className="flex flex-col items-start w-full z-0 ml-5 overflow-hidden">
                   {" "}
                   <h1 className="flex uppercase mb-8 text-2xl ml-5 font-bold">
                     My Inventory <AiOutlineArrowRight className="mt-1 ml-4" />
@@ -56,7 +56,7 @@ export default function DistributerInterFace() {
                         spaceBetween: 20,
                       },
                       1280: {
-                        slidesPerView: 4.25,
+                        slidesPerView: 3.25,
                         spaceBetween: 20,
                       },
                     }}

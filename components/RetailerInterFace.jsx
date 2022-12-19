@@ -45,8 +45,8 @@ export default function RetailerInterFace() {
                   <UserDetails />
                 </div>
 
-                <div className="flex w-full ml-5 flex-col">
-                  <div className="flex flex-col">
+                <div className="flex w-full ml-5 flex-col overflow-hidden">
+                  <div className="flex flex-col z-0">
                     <h1 className="flex  uppercase mb-8 text-2xl font-bold">
                       Distributers <AiOutlineArrowRight className="mt-1 ml-4" />
                     </h1>
@@ -66,7 +66,7 @@ export default function RetailerInterFace() {
                           spaceBetween: 20,
                         },
                         1280: {
-                          slidesPerView: 4.25,
+                          slidesPerView: 3.25,
                           spaceBetween: 30,
                         },
                       }}

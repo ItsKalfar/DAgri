@@ -67,6 +67,11 @@ export default function ProductCard({
     setModalIsOpen(!modalIsOpen);
   };
 
+  const handlePurchase = () => {
+    purchaseProduct(tokenID, price);
+    setModalIsOpen(!modalIsOpen);
+  };
+
   return (
     <>
       <Modal isOpen={modalIsOpen} style={customStyles}>
@@ -149,7 +154,12 @@ export default function ProductCard({
               </button>
             </div>
           ) : (
-            <div>Purchase</div>
+            <div
+              className="bg-blue-600 hover:bg-blue-900 rounded-full text-white  py-2 px-8 focus:outline-none focus:shadow-outline uppercase flex items-center justify-center cursor-pointer font-semibold"
+              onClick={handlePurchase}
+            >
+              Purchase
+            </div>
           )}
         </div>
       </Modal>
