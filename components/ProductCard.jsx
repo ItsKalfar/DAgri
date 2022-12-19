@@ -30,7 +30,7 @@ export default function ProductCard({
   Seller,
 }) {
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [newPrice, setNewPrice] = useState(0.0);
+  const [newPrice, setNewPrice] = useState(0n);
   const [sellerAddress, setSellerAddress] = useState();
   const {
     currentAccount,
@@ -56,8 +56,7 @@ export default function ProductCard({
   };
 
   const handleUpdate = () => {
-    let parsedPrice = parseFloat(newPrice);
-    updateProduct(tokenID, parsedPrice);
+    updateProduct(tokenID, newPrice);
 
     setModalIsOpen(!modalIsOpen);
   };

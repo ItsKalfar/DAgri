@@ -9,10 +9,19 @@ export default function SignInPage() {
     name: "",
     location: "",
     profession: "",
+    contactNo: "",
+    emailAddress: "",
   });
   const handleSignIn = async () => {
     if (user.name && user.location && user.profession) {
-      signInUser(user.name, user.location, user.profession, currentAccount);
+      signInUser(
+        user.name,
+        user.location,
+        user.profession,
+        currentAccount,
+        user.contactNo,
+        user.emailAddress
+      );
     } else {
       toast.error("Please provide all the data");
     }
@@ -47,6 +56,32 @@ export default function SignInPage() {
             placeholder="Enter your location..."
             onChange={(e) =>
               setUser((prev) => ({ ...prev, location: e.target.value }))
+            }
+          />
+        </div>
+        <div className="mb-4 w-full">
+          <label className="block mb-2 text-sm font-medium text-gray-900">
+            Contact No
+          </label>
+          <input
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            type="tel"
+            placeholder="Enter your contact no..."
+            onChange={(e) =>
+              setUser((prev) => ({ ...prev, contactNo: e.target.value }))
+            }
+          />
+        </div>
+        <div className="mb-4 w-full">
+          <label className="block mb-2 text-sm font-medium text-gray-900">
+            Email Address
+          </label>
+          <input
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            type="email"
+            placeholder="Enter your email..."
+            onChange={(e) =>
+              setUser((prev) => ({ ...prev, emailAddress: e.target.value }))
             }
           />
         </div>

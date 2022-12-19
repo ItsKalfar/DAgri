@@ -5,6 +5,8 @@ import { ProjectContext } from "../context/ProjectContext";
 import { toast } from "react-hot-toast";
 import { GrLocation, GrUserWorker } from "react-icons/gr";
 import { BsPerson } from "react-icons/bs";
+import { TiContacts } from "react-icons/ti";
+import { MdOutlineMailOutline } from "react-icons/md";
 
 export default function UserDetails() {
   const { currentAccount } = useContext(ProjectContext);
@@ -13,6 +15,8 @@ export default function UserDetails() {
     name: "",
     location: "",
     profession: "",
+    contactNo: "",
+    emailAddress: "",
   });
 
   const handleUser = async () => {
@@ -35,6 +39,8 @@ export default function UserDetails() {
             name: user.data().UserName,
             location: user.data().userLocation,
             profession: user.data().userProf,
+            contactNo: user.data().userContactNo,
+            emailAddress: user.data().userEmail,
           });
         });
       }
@@ -68,7 +74,7 @@ export default function UserDetails() {
           Get Details
         </div>
         <div>
-          {userData ? (
+          {userData.name !== "" ? (
             <div className="py-4 -mb-8">
               <div className="flex flex-col items-start mb-4 text-md font-medium text-gray-900 ml-1">
                 <div className="flex items-start">
@@ -97,6 +103,24 @@ export default function UserDetails() {
                 <div className="ml-2 mt-2 py-1 px-8 bg-gray-200 rounded-full text-gray-500 flex items-center w-full">
                   {" "}
                   {userData.profession.toUpperCase()}
+                </div>
+              </div>
+              <div className="flex flex-col items-start mb-4 text-md font-medium text-gray-900">
+                <div className="flex items-start">
+                  <MdOutlineMailOutline className="mr-1 mt-1" /> Email Address :
+                </div>
+                <div className="ml-2 mt-2 py-1 px-8 bg-gray-200 rounded-full text-gray-500 flex items-center w-full">
+                  {" "}
+                  {userData.emailAddress}
+                </div>
+              </div>
+              <div className="flex flex-col items-start mb-4 text-md font-medium text-gray-900">
+                <div className="flex items-start">
+                  <TiContacts className="mr-1 mt-1" /> Contact No. :
+                </div>
+                <div className="ml-2 mt-2 py-1 px-8 bg-gray-200 rounded-full text-gray-500 flex items-center w-full">
+                  {" "}
+                  {userData.contactNo}
                 </div>
               </div>
             </div>

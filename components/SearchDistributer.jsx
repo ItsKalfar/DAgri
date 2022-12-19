@@ -9,7 +9,6 @@ export default function SearchDistributer() {
 
   const handleSearch = () => {
     getDistributer(productName);
-    getDistributer(productName);
     console.log(productDistributer);
   };
 
@@ -31,7 +30,6 @@ export default function SearchDistributer() {
       </div>
 
       <button
-        disabled={productName.length <= 0}
         className="bg-blue-600 hover:bg-blue-900 rounded-full text-white  py-3 px-9 focus:outline-none focus:shadow-outline uppercase flex items-center justify-center cursor-pointer font-semibold w-full disabled:bg-blue-900"
         onClick={handleSearch}
       >

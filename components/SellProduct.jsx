@@ -92,6 +92,9 @@ export default function SellProduct() {
             <option className="p-2.5" value="fruits">
               Fruits
             </option>
+            <option className="p-2.5" value="others">
+              Others
+            </option>
           </select>
         </div>
         <div

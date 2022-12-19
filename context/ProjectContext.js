@@ -25,6 +25,7 @@ export const ProjectContextProvider = ({ children }) => {
   const [allOwners, setAllOwners] = useState([]);
   const [isSingedIn, setIsSignedIn] = useState(false);
   const [userProfession, setUserProfession] = useState();
+  const [stateChanged, setStateChanged] = useState(false);
 
   /**
    * Prompts user to connect their MetaMask wallet
@@ -67,9 +68,16 @@ export const ProjectContextProvider = ({ children }) => {
     }
   };
 
-  const signInUser = async (name, location, profession, walletAddress) => {
+  const signInUser = async (
+    name,
+    location,
+    profession,
+    walletAddress,
+    contactNo,
+    emailAddress
+  ) => {
     try {
-      if (!name || !location || !profession) {
+      if (!name || !location || !profession || !contactNo || !emailAddress) {
         toast.error("Please Provide All The Details");
       }
       await addDoc(collection(db, "users"), {
@@ -77,6 +85,8 @@ export const ProjectContextProvider = ({ children }) => {
         userLocation: location,
         userProf: profession,
         userAddress: walletAddress,
+        userContactNo: contactNo,
+        userEmail: emailAddress,
       });
       setIsSignedIn(true);
       setUserProfession(profession);
@@ -120,8 +130,6 @@ export const ProjectContextProvider = ({ children }) => {
             toast.error("Please Provide All The Details");
           }
 
-          // let ethersToWei = ethers.utils.parseUnits(price.toString(), "ether");
-
           let listTheItem = await SupplyChain.listItem(
             name,
             quantity,
@@ -132,6 +140,7 @@ export const ProjectContextProvider = ({ children }) => {
           toast.loading("Listing Your Item...", { duration: 6000 });
           SupplyChain.on("ItemListed", () => {
             toast.success("Item Listed Successfully");
+            setStateChanged(!stateChanged);
           });
         }
       }
@@ -185,7 +194,10 @@ export const ProjectContextProvider = ({ children }) => {
           const SupplyChain = new ethers.Contract(contractAddress, ABI, signer);
           let cancelItem = await SupplyChain.cancelItem(tokenNumber);
           toast.loading("Canceling Item", { duration: 4000 });
-          SupplyChain.on("ItemCanceled", () => toast.success("Item Canceled!"));
+          SupplyChain.on("ItemCanceled", () => {
+            toast.success("Item Canceled!");
+            setStateChanged(!stateChanged);
+          });
         }
       }
     } catch (error) {
@@ -209,7 +221,10 @@ export const ProjectContextProvider = ({ children }) => {
             newPrice
           );
           toast.loading("Updating Price", { duration: 4000 });
-          SupplyChain.on("ItemUpdated", () => toast.success("Price Update"));
+          SupplyChain.on("ItemUpdated", () => {
+            toast.success("Price Update");
+            setStateChanged(!stateChanged);
+          });
         }
       }
     } catch (error) {
@@ -266,9 +281,10 @@ export const ProjectContextProvider = ({ children }) => {
             value: price,
           });
           toast.loading("Buying product...", { duration: 4000 });
-          SupplyChain.on("ItemBought", () =>
-            toast.success("Item Bought! Added to Your inventory")
-          );
+          SupplyChain.on("ItemBought", () => {
+            toast.success("Item Bought! Added to Your inventory");
+            setStateChanged(!stateChanged);
+          });
         }
       }
     } catch (error) {
@@ -292,9 +308,10 @@ export const ProjectContextProvider = ({ children }) => {
             value: price,
           });
           toast.loading("Processing Your Purchase...", { duration: 4000 });
-          SupplyChain.on("ItemPurchased", () =>
-            toast.success("Item Purchased!")
-          );
+          SupplyChain.on("ItemPurchased", () => {
+            toast.success("Item Purchased!");
+            setStateChanged(!stateChanged);
+          });
         }
       }
     } catch (error) {
@@ -337,7 +354,7 @@ export const ProjectContextProvider = ({ children }) => {
           let getDistributerProdutcs = await SupplyChain.searchDistributer(
             productName
           );
-          setProductDistributer((prev) => [getDistributerProdutcs, ...prev]);
+          setProductDistributer(getDistributerProdutcs);
         }
       }
     } catch (error) {
@@ -352,7 +369,7 @@ export const ProjectContextProvider = ({ children }) => {
       getDistributerInventory();
     }
     checkUser();
-  }, [currentAccount]);
+  }, [currentAccount, stateChanged]);
 
   return (
     <ProjectContext.Provider

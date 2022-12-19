@@ -47,67 +47,27 @@ export default function RetailerInterFace() {
 
                 <div className="flex w-full ml-5 flex-col overflow-hidden">
                   <div className="flex flex-col z-0">
-                    <h1 className="flex  uppercase mb-8 text-2xl font-bold">
+                    <h1 className="flex uppercase mb-8 text-2xl ml-5 font-bold">
                       Distributers <AiOutlineArrowRight className="mt-1 ml-4" />
                     </h1>
-                    <Swiper
-                      autoplay={false}
-                      loop={true}
-                      spaceBetween={10}
-                      slidesPerView="auto"
-                      breakpoints={{
-                        320: {
-                          slidesPerView: 1.25,
-                          spaceBetween: 30,
-                        },
-
-                        1024: {
-                          slidesPerView: 2.25,
-                          spaceBetween: 20,
-                        },
-                        1280: {
-                          slidesPerView: 3.25,
-                          spaceBetween: 30,
-                        },
-                      }}
-                      className="w-full ml-8 z-0 max-w-fit"
-                    >
-                      {productDistributer ? (
-                        productDistributer.map((product) => {
-                          let {
-                            productName,
-                            tokenId,
-                            productQuantity,
-                            productPrice,
-                            cateory,
-                            seller,
-                          } = product;
-
-                          let tokenID = tokenId.toString();
-                          let quantity = productQuantity.toString();
-                          let price = productPrice.toString();
-                          let Seller = seller.toString();
-                          let category = cateory.toUpperCase();
-
-                          return (
-                            <SwiperSlide key={tokenId} className="mb-8">
-                              <ProductCard
-                                name={productName}
-                                tokenID={tokenID}
-                                quantity={quantity}
-                                price={price}
-                                Category={category}
-                                Seller={Seller}
-                              />
-                            </SwiperSlide>
-                          );
-                        })
+                    <div className="w-96 mb-8 z-0 ">
+                      {productDistributer.productName ? (
+                        <ProductCard
+                          name={productDistributer.productName}
+                          tokenID={productDistributer.tokenId.toString()}
+                          quantity={productDistributer.productQuantity.toString()}
+                          price={productDistributer.productPrice.toString()}
+                          Category={productDistributer.cateory}
+                          Seller={productDistributer.seller}
+                        />
                       ) : (
                         <div>
-                          <h1>Not Found</h1>
+                          <h1 className="font-semibold text-red-600 ml-8">
+                            Not Found!
+                          </h1>
                         </div>
                       )}
-                    </Swiper>
+                    </div>
                   </div>
                   <div>
                     <h1 className="flex uppercase mb-8 text-2xl ml-5 font-bold">
