@@ -9,14 +9,12 @@ module.exports = {
   networks: {
     hardhat: {
       chainId: 31337,
-      allowUnlimitedContractSize: true,
     },
     goerli: {
       url: process.env.GOERLI_RPC_URL,
       accounts: [process.env.PRIVATE_KEY],
       chainId: 5,
-      blockConfirmations: 1,
-      allowUnlimitedContractSize: true,
+      blockConfirmations: 6,
     },
   },
   etherscan: {
