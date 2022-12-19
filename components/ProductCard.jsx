@@ -97,8 +97,7 @@ export default function ProductCard({
             </p>
             <div>
               <div className="flex mb-6 text-md font-medium text-gray-900 items-start justify-center">
-                Price : <FaEthereum className="mt-1 ml-2 mr-1" />{" "}
-                {ethers.utils.formatEther(price)}
+                Price : <FaEthereum className="mt-1 ml-2 mr-1" /> {price}
               </div>
             </div>
           </div>

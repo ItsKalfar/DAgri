@@ -260,14 +260,17 @@ export const ProjectContextProvider = ({ children }) => {
           const provider = new ethers.providers.Web3Provider(ethereum);
           const signer = provider.getSigner();
           const SupplyChain = new ethers.Contract(contractAddress, ABI, signer);
+          let token = parseInt(tokenNumber);
 
-          let buyItem = await SupplyChain.buyItem(tokenNumber);
+          let buyItem = await SupplyChain.buyItem(token, {
+            gasLimit: 50000,
+          });
           toast.loading("Processing Your Purchase", { duration: 4000 });
           SupplyChain.on("ItemBought", () => toast.success("Item Purchased"));
         }
       }
     } catch (error) {
-      toast.error(error.message);
+      console.log(error.message);
     }
   };
 

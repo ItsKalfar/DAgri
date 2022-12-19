@@ -7,7 +7,7 @@ export default function SellProduct() {
   const [values, setValues] = useState({
     name: "",
     quantity: 0,
-    price: "",
+    price: 0n,
     category: "",
   });
 
@@ -55,7 +55,7 @@ export default function SellProduct() {
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             type="number"
             min="0"
-            placeholder="Enter price..."
+            placeholder="Enter price in WEI..."
             onChange={(e) =>
               setValues((prev) => ({ ...prev, price: e.target.value }))
             }

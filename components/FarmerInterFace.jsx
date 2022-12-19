@@ -31,10 +31,10 @@ export default function FarmerInterFace() {
                 />
               </div>
             ) : (
-              <div className="container mx-auto py-8 flex items-start">
+              <div className="container border-2 border-black mx-auto py-8 flex items-start">
                 <div className="flex flex-col items-start">
+                  <SellProduct />
                   <UserDetails />
-                  <SellProduct className="border-black border-2" />
                 </div>
 
                 <div className="w-full">
@@ -54,9 +54,9 @@ export default function FarmerInterFace() {
 
                       let tokenID = tokenId.toString();
                       let quantity = productQuantity.toString();
-                      let price = productPrice.toString();
                       let Seller = seller.toString();
                       let category = cateory.toUpperCase();
+                      let price = productPrice.toString();
 
                       if (Seller.toLowerCase() == currentAccount) {
                         return (

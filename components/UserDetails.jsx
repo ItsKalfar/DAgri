@@ -46,7 +46,7 @@ export default function UserDetails() {
 
   return (
     <div>
-      <div className="bg-white px-12 py-16 rounded shadow-lg text-black mb-8 w-96">
+      <div className="bg-white px-12 py-16 rounded shadow-lg text-black my-8 w-96">
         <h1 className="uppercase mb-8 text-2xl text-center font-bold">
           user detailes
         </h1>
