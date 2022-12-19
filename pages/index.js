@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-
+import Head from "next/head";
 import { Toaster } from "react-hot-toast";
 import { ProjectContext } from "../context/ProjectContext";
 
@@ -16,6 +16,16 @@ export default function Home() {
 
   return (
     <>
+      <Head>
+        <title>DAgri</title>
+        <meta name="author" content="Sagar Gund" />
+        <meta name="distribution" content="global" />
+        <meta name="language" content="English" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="DAgri" />
+        <meta property="og:site_name" content="DAgri" />
+        <meta property="og:url" content="https://d-agri-frontend.vercel.app/" />
+      </Head>
       <Toaster position="top-center" reverseOrder={false} />
 
       <div id="index" className="bg-slate-50 min-h-screen">
