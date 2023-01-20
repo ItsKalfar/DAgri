@@ -19,11 +19,10 @@ export default function ConnectBtn() {
         </div>
       ) : (
         <button
-          className="bg-blue-600 hover:bg-blue-900 rounded-full text-white  py-3 px-9 focus:outline-none focus:shadow-outline uppercase flex items-center justify-between cursor-pointer font-semibold"
+          className="bg-blue-600 hover:bg-blue-900 rounded-full text-white  py-2 px-9 focus:outline-none focus:shadow-outline uppercase flex items-center justify-between cursor-pointer font-semibold"
           onClick={() => connectWallet()}
         >
-          <span className="mr-2">Connect</span>
-          <BsWallet2 />
+          Connect
         </button>
       )}
     </div>
