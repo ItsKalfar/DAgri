@@ -29,5 +29,5 @@ First you have to install metamask in your browser and make an account in it. Th
 
 ### Visit
 
-Then you can visit the web application which is hosted on Vercel [here!](d-agri-frontend.vercel.app). Make sure your wallet is on Goerli test network and is funded with test ETH.
+Then you can visit the web application which is hosted on Vercel [here!](https://d-agri-frontend.vercel.app/). Make sure your wallet is on Goerli test network and is funded with test ETH.
 
