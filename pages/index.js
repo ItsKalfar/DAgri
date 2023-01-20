@@ -50,10 +50,10 @@ export default function Home() {
           <div className="container mx-auto p-8 flex flex-col items-center w-screen h-screen justify-center">
             <div className="max-w-md w-full pointer-events-auto flex flex-col items-start mx-auto p-4 text-center">
               <p className="text-xl font-medium text-gray-900 w-full">
-                Welcome to MyPlace!
+                Welcome to DAgri!
               </p>
               <p className="mt-2 text-sm text-gray-500">
-                To use MySpace, make sure you have{" "}
+                To use DAgri, make sure you have{" "}
                 <Link
                   href="https://metamask.io/"
                   target="_blank"
@@ -71,6 +71,9 @@ export default function Home() {
                 >
                   Goerli Faucet.
                 </Link>
+              </p>
+              <p className="text-sm mt-4 text-gray-500 w-full">
+                After that, connect the wallet using Connect button.
               </p>
             </div>
             <ConnectBtn />
